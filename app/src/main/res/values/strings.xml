@@ -5,4 +5,19 @@
     <string name="action_settings">Settings</string>
     <string name="drawer_open">open</string>
     <string name="drawer_close">close</string>
+    <string name="title_activity_product">ProductActivity</string>
+
+
+    <!--icon-->
+    <string name="icon_stock">&#xe600;</string>
+    <string name="icon_search">&#xe601;</string>
+    <string name="icon_sale">&#xe602;</string>
+    <string name="icon_custom">&#xe603;</string>
+    <string name="icon_report">&#xe604;</string>
+    <string name="icon_product">&#xe605;</string>
+    <string name="icon_purchase">&#xe606;</string>
+    <string name="title_activity_account_sales">AccountSalesActivity</string>
+    <string name="title_activity_search_product">SearchProductActivity</string>
+    <string name="title_activity_custom">CustomActivity</string>
+
 </resources>

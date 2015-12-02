@@ -2,20 +2,41 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="besterp.sherlock221b.com.besterp" >
 
+    <uses-permission android:name="android.permission.READ_CONTACTS"></uses-permission>
+
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name=".App"
         android:theme="@style/AppTheme" >
         <activity
             android:name=".ui.activity.MainActivity"
             android:label="@string/app_name" >
+
+        </activity>
+        <activity
+            android:name=".ui.activity.ProductActivity"
+            android:label="@string/title_activity_product" >
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+        </activity>
+        <activity
+            android:name=".ui.activity.AccountSalesActivity"
+            android:label="@string/title_activity_account_sales" >
+        </activity>
+        <activity
+            android:name=".ui.activity.SearchProductActivity"
+            android:label="@string/title_activity_search_product" >
+        </activity>
+        <activity
+            android:name=".ui.activity.CustomActivity"
+            android:label="@string/title_activity_custom" >
         </activity>
     </application>
 
