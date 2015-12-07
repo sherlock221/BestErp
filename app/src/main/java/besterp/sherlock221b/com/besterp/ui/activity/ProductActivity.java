@@ -123,6 +123,9 @@ public class ProductActivity extends BaseActivity {
         Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
         Cursor cursor = getContentResolver().query(uri,
                 new String[] { "display_name", "sort_key" }, null, null, "sort_key");
+
+
+
         if (cursor.moveToFirst()) {
             do {
                 String name = cursor.getString(0);
@@ -139,12 +142,13 @@ public class ProductActivity extends BaseActivity {
         indexer = new AlphabetIndexer(cursor, 1, alphabet);
         adapter.setIndexer(indexer);
 
+
         if (products.size() > 0) {
             setupContactsListView();
             setAlpabetListener();
         }
 
-         testSave();
+//         testSave();
     }
 
 
