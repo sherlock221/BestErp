@@ -1,7 +1,5 @@
 package besterp.sherlock221b.com.besterp.util;
 
-import android.graphics.Typeface;
-
 import com.google.gson.Gson;
 
 /**

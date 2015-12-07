@@ -5,5 +5,4 @@ package besterp.sherlock221b.com.besterp.cons;
  */
 public enum MenuActivityEnum {
     SCALE,SEARCH,PRODUCT,CUSTOM,PURCHASE,STOCK,REPORT;
-
 }

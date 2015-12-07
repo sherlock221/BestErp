@@ -1,10 +1,8 @@
 package besterp.sherlock221b.com.besterp.ui.activity;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import besterp.sherlock221b.com.besterp.R;
 import besterp.sherlock221b.com.besterp.ui.common.BaseActivity;

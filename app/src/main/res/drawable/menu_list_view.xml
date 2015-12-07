@@ -5,10 +5,7 @@
         android:drawable="@color/accent_material_light" /> <!-- pressed -->
     <item android:state_focused="true"
         android:drawable="@color/accent_material_dark" /> <!-- focused -->
-
     <item android:state_hovered="true"
         android:drawable="@color/accent_material_dark" /> <!-- hovered -->
-
     <item android:drawable="@color/accent_material_dark" /> <!-- default -->
-
 </selector>

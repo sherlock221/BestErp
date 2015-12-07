@@ -3,7 +3,6 @@ package besterp.sherlock221b.com.besterp.ui.activity;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.ContactsContract;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,9 +18,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import besterp.sherlock221b.com.besterp.R;
+import besterp.sherlock221b.com.besterp.cons.CustomTypeEnum;
+import besterp.sherlock221b.com.besterp.db.DbUtil;
+import besterp.sherlock221b.com.besterp.db.model.Product;
 import besterp.sherlock221b.com.besterp.model.DrawerMenuModel;
 import besterp.sherlock221b.com.besterp.model.ProductModel;
 import besterp.sherlock221b.com.besterp.ui.adapter.ProductListAdapter;
@@ -141,10 +144,22 @@ public class ProductActivity extends BaseActivity {
             setAlpabetListener();
         }
 
-
+         testSave();
     }
 
 
+
+    public void testSave(){
+
+        Product product = new Product();
+        product.setProductName("钳子");
+        product.setCrtTime(new Date());
+        product.setUpdateTime(new Date());
+        product.setIsDelete(false);
+        product.setProductDesc("hah");
+        DbUtil.getProductService().save(product);
+
+    }
 
 
     private void setAlpabetListener(){
