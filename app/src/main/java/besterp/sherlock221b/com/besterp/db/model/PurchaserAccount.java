@@ -21,6 +21,8 @@ public class PurchaserAccount {
     private int purchaserAccountNumber;
     private double purchaserAccountPrice;
     private double purchaserAccountTotal;
+    /** Not-null value. */
+    private java.util.Date purchaserDate;
     private String desc;
     private boolean isDelete;
     /** Not-null value. */
@@ -57,11 +59,12 @@ public class PurchaserAccount {
         this.id = id;
     }
 
-    public PurchaserAccount(Long id, int purchaserAccountNumber, double purchaserAccountPrice, double purchaserAccountTotal, String desc, boolean isDelete, java.util.Date crtTime, java.util.Date updateTime, Long productId, Long standardId, Long customId) {
+    public PurchaserAccount(Long id, int purchaserAccountNumber, double purchaserAccountPrice, double purchaserAccountTotal, java.util.Date purchaserDate, String desc, boolean isDelete, java.util.Date crtTime, java.util.Date updateTime, Long productId, Long standardId, Long customId) {
         this.id = id;
         this.purchaserAccountNumber = purchaserAccountNumber;
         this.purchaserAccountPrice = purchaserAccountPrice;
         this.purchaserAccountTotal = purchaserAccountTotal;
+        this.purchaserDate = purchaserDate;
         this.desc = desc;
         this.isDelete = isDelete;
         this.crtTime = crtTime;
@@ -107,6 +110,16 @@ public class PurchaserAccount {
 
     public void setPurchaserAccountTotal(double purchaserAccountTotal) {
         this.purchaserAccountTotal = purchaserAccountTotal;
+    }
+
+    /** Not-null value. */
+    public java.util.Date getPurchaserDate() {
+        return purchaserDate;
+    }
+
+    /** Not-null value; ensure this value is available before it is saved to the database. */
+    public void setPurchaserDate(java.util.Date purchaserDate) {
+        this.purchaserDate = purchaserDate;
     }
 
     public String getDesc() {

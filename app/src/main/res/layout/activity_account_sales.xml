@@ -5,18 +5,52 @@
     tools:context="besterp.sherlock221b.com.besterp.ui.activity.AccountSalesActivity">
 
 
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@android:color/white"
         android:orientation="vertical"
         >
 
+        <!-- 表头 -->
+        <include layout="@layout/sale_title"/>
 
+        <!--列表-->
         <com.baoyz.swipemenulistview.SwipeMenuListView
             android:id="@+id/sale_list_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:divider="@android:color/darker_gray"
+            android:dividerHeight="1px"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            >
+
+            <Button
+                android:id="@+id/btn_prev_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="前一天"
+                />
+
+            <Button
+                android:id="@+id/btn_next_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="后一天"
+                />
+
+            <Button
+                android:id="@+id/btn_select_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="选择日期"
+                />
+        </LinearLayout>
 
 
     </LinearLayout>

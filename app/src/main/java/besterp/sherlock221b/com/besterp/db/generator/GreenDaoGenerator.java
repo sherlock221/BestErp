@@ -14,7 +14,7 @@ public class GreenDaoGenerator {
     public static void main(String[] args) throws Exception {
 
         //两个参数分别代表：数据库版本号与自动生成代码的包路径。
-        Schema schema = new Schema(6, "besterp.sherlock221b.com.besterp.db.model");
+        Schema schema = new Schema(8, "besterp.sherlock221b.com.besterp.db.model");
         schema.setDefaultJavaPackageDao("besterp.sherlock221b.com.besterp.db.dao");
 
         schema.enableKeepSectionsByDefault();
@@ -31,7 +31,6 @@ public class GreenDaoGenerator {
         product.addIdProperty().primaryKey();
         product.addStringProperty("productName").notNull();
         product.addStringProperty("productDesc");
-
 
         //单位
         product.addStringProperty("productUnit");
@@ -96,11 +95,12 @@ public class GreenDaoGenerator {
 
 
         //销售清单
-        Entity saleAccount = schema.addEntity("ScaleAccount");
+        Entity saleAccount = schema.addEntity("SaleAccount");
         saleAccount.addIdProperty().primaryKey();
-        saleAccount.addIntProperty("scaleAccountNumber").notNull();
-        saleAccount.addDoubleProperty("scaleAccountPrice").notNull();
-        saleAccount.addDoubleProperty("scaleAccountTotal").notNull();
+        saleAccount.addIntProperty("saleAccountNumber").notNull();
+        saleAccount.addDoubleProperty("saleAccountPrice").notNull();
+        saleAccount.addDoubleProperty("saleAccountTotal").notNull();
+        saleAccount.addDateProperty("saleDate").notNull();
         saleAccount.addStringProperty("desc");
 
         saleAccount.addBooleanProperty("isDelete").notNull();
@@ -126,6 +126,8 @@ public class GreenDaoGenerator {
         purchaserAccount.addIntProperty("purchaserAccountNumber").notNull();
         purchaserAccount.addDoubleProperty("purchaserAccountPrice").notNull();
         purchaserAccount.addDoubleProperty("purchaserAccountTotal").notNull();
+        purchaserAccount.addDateProperty("purchaserDate").notNull();
+
         purchaserAccount.addStringProperty("desc");
 
 

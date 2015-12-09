@@ -34,13 +34,14 @@ public class PurchaserAccountDao extends AbstractDao<PurchaserAccount, Long> {
         public final static Property PurchaserAccountNumber = new Property(1, int.class, "purchaserAccountNumber", false, "PURCHASER_ACCOUNT_NUMBER");
         public final static Property PurchaserAccountPrice = new Property(2, double.class, "purchaserAccountPrice", false, "PURCHASER_ACCOUNT_PRICE");
         public final static Property PurchaserAccountTotal = new Property(3, double.class, "purchaserAccountTotal", false, "PURCHASER_ACCOUNT_TOTAL");
-        public final static Property Desc = new Property(4, String.class, "desc", false, "DESC");
-        public final static Property IsDelete = new Property(5, boolean.class, "isDelete", false, "IS_DELETE");
-        public final static Property CrtTime = new Property(6, java.util.Date.class, "crtTime", false, "CRT_TIME");
-        public final static Property UpdateTime = new Property(7, java.util.Date.class, "updateTime", false, "UPDATE_TIME");
-        public final static Property ProductId = new Property(8, Long.class, "productId", false, "PRODUCT_ID");
-        public final static Property StandardId = new Property(9, Long.class, "standardId", false, "STANDARD_ID");
-        public final static Property CustomId = new Property(10, Long.class, "customId", false, "CUSTOM_ID");
+        public final static Property PurchaserDate = new Property(4, java.util.Date.class, "purchaserDate", false, "PURCHASER_DATE");
+        public final static Property Desc = new Property(5, String.class, "desc", false, "DESC");
+        public final static Property IsDelete = new Property(6, boolean.class, "isDelete", false, "IS_DELETE");
+        public final static Property CrtTime = new Property(7, java.util.Date.class, "crtTime", false, "CRT_TIME");
+        public final static Property UpdateTime = new Property(8, java.util.Date.class, "updateTime", false, "UPDATE_TIME");
+        public final static Property ProductId = new Property(9, Long.class, "productId", false, "PRODUCT_ID");
+        public final static Property StandardId = new Property(10, Long.class, "standardId", false, "STANDARD_ID");
+        public final static Property CustomId = new Property(11, Long.class, "customId", false, "CUSTOM_ID");
     };
 
     private DaoSession daoSession;
@@ -63,13 +64,14 @@ public class PurchaserAccountDao extends AbstractDao<PurchaserAccount, Long> {
                 "\"PURCHASER_ACCOUNT_NUMBER\" INTEGER NOT NULL ," + // 1: purchaserAccountNumber
                 "\"PURCHASER_ACCOUNT_PRICE\" REAL NOT NULL ," + // 2: purchaserAccountPrice
                 "\"PURCHASER_ACCOUNT_TOTAL\" REAL NOT NULL ," + // 3: purchaserAccountTotal
-                "\"DESC\" TEXT," + // 4: desc
-                "\"IS_DELETE\" INTEGER NOT NULL ," + // 5: isDelete
-                "\"CRT_TIME\" INTEGER NOT NULL ," + // 6: crtTime
-                "\"UPDATE_TIME\" INTEGER NOT NULL ," + // 7: updateTime
-                "\"PRODUCT_ID\" INTEGER," + // 8: productId
-                "\"STANDARD_ID\" INTEGER," + // 9: standardId
-                "\"CUSTOM_ID\" INTEGER);"); // 10: customId
+                "\"PURCHASER_DATE\" INTEGER NOT NULL ," + // 4: purchaserDate
+                "\"DESC\" TEXT," + // 5: desc
+                "\"IS_DELETE\" INTEGER NOT NULL ," + // 6: isDelete
+                "\"CRT_TIME\" INTEGER NOT NULL ," + // 7: crtTime
+                "\"UPDATE_TIME\" INTEGER NOT NULL ," + // 8: updateTime
+                "\"PRODUCT_ID\" INTEGER," + // 9: productId
+                "\"STANDARD_ID\" INTEGER," + // 10: standardId
+                "\"CUSTOM_ID\" INTEGER);"); // 11: customId
     }
 
     /** Drops the underlying database table. */
@@ -90,28 +92,29 @@ public class PurchaserAccountDao extends AbstractDao<PurchaserAccount, Long> {
         stmt.bindLong(2, entity.getPurchaserAccountNumber());
         stmt.bindDouble(3, entity.getPurchaserAccountPrice());
         stmt.bindDouble(4, entity.getPurchaserAccountTotal());
+        stmt.bindLong(5, entity.getPurchaserDate().getTime());
  
         String desc = entity.getDesc();
         if (desc != null) {
-            stmt.bindString(5, desc);
+            stmt.bindString(6, desc);
         }
-        stmt.bindLong(6, entity.getIsDelete() ? 1L: 0L);
-        stmt.bindLong(7, entity.getCrtTime().getTime());
-        stmt.bindLong(8, entity.getUpdateTime().getTime());
+        stmt.bindLong(7, entity.getIsDelete() ? 1L: 0L);
+        stmt.bindLong(8, entity.getCrtTime().getTime());
+        stmt.bindLong(9, entity.getUpdateTime().getTime());
  
         Long productId = entity.getProductId();
         if (productId != null) {
-            stmt.bindLong(9, productId);
+            stmt.bindLong(10, productId);
         }
  
         Long standardId = entity.getStandardId();
         if (standardId != null) {
-            stmt.bindLong(10, standardId);
+            stmt.bindLong(11, standardId);
         }
  
         Long customId = entity.getCustomId();
         if (customId != null) {
-            stmt.bindLong(11, customId);
+            stmt.bindLong(12, customId);
         }
     }
 
@@ -135,13 +138,14 @@ public class PurchaserAccountDao extends AbstractDao<PurchaserAccount, Long> {
             cursor.getInt(offset + 1), // purchaserAccountNumber
             cursor.getDouble(offset + 2), // purchaserAccountPrice
             cursor.getDouble(offset + 3), // purchaserAccountTotal
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // desc
-            cursor.getShort(offset + 5) != 0, // isDelete
-            new java.util.Date(cursor.getLong(offset + 6)), // crtTime
-            new java.util.Date(cursor.getLong(offset + 7)), // updateTime
-            cursor.isNull(offset + 8) ? null : cursor.getLong(offset + 8), // productId
-            cursor.isNull(offset + 9) ? null : cursor.getLong(offset + 9), // standardId
-            cursor.isNull(offset + 10) ? null : cursor.getLong(offset + 10) // customId
+            new java.util.Date(cursor.getLong(offset + 4)), // purchaserDate
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // desc
+            cursor.getShort(offset + 6) != 0, // isDelete
+            new java.util.Date(cursor.getLong(offset + 7)), // crtTime
+            new java.util.Date(cursor.getLong(offset + 8)), // updateTime
+            cursor.isNull(offset + 9) ? null : cursor.getLong(offset + 9), // productId
+            cursor.isNull(offset + 10) ? null : cursor.getLong(offset + 10), // standardId
+            cursor.isNull(offset + 11) ? null : cursor.getLong(offset + 11) // customId
         );
         return entity;
     }
@@ -153,13 +157,14 @@ public class PurchaserAccountDao extends AbstractDao<PurchaserAccount, Long> {
         entity.setPurchaserAccountNumber(cursor.getInt(offset + 1));
         entity.setPurchaserAccountPrice(cursor.getDouble(offset + 2));
         entity.setPurchaserAccountTotal(cursor.getDouble(offset + 3));
-        entity.setDesc(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setIsDelete(cursor.getShort(offset + 5) != 0);
-        entity.setCrtTime(new java.util.Date(cursor.getLong(offset + 6)));
-        entity.setUpdateTime(new java.util.Date(cursor.getLong(offset + 7)));
-        entity.setProductId(cursor.isNull(offset + 8) ? null : cursor.getLong(offset + 8));
-        entity.setStandardId(cursor.isNull(offset + 9) ? null : cursor.getLong(offset + 9));
-        entity.setCustomId(cursor.isNull(offset + 10) ? null : cursor.getLong(offset + 10));
+        entity.setPurchaserDate(new java.util.Date(cursor.getLong(offset + 4)));
+        entity.setDesc(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setIsDelete(cursor.getShort(offset + 6) != 0);
+        entity.setCrtTime(new java.util.Date(cursor.getLong(offset + 7)));
+        entity.setUpdateTime(new java.util.Date(cursor.getLong(offset + 8)));
+        entity.setProductId(cursor.isNull(offset + 9) ? null : cursor.getLong(offset + 9));
+        entity.setStandardId(cursor.isNull(offset + 10) ? null : cursor.getLong(offset + 10));
+        entity.setCustomId(cursor.isNull(offset + 11) ? null : cursor.getLong(offset + 11));
      }
     
     /** @inheritdoc */

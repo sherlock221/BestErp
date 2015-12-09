@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/SaleTable.ListHeader"
+    >
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="3"
+        android:gravity="left"
+        android:text="@string/sale_title_name_product"
+        style="@style/SaleTable.ListHeader.Text"
+        />
+
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/sale_title_name_standard"
+        android:layout_weight="1"
+        style="@style/SaleTable.ListHeader.Text"
+        />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/sale_title_name_util"
+        android:layout_weight="1"
+        style="@style/SaleTable.ListHeader.Text"
+        />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/sale_title_name_number"
+        android:layout_weight="1"
+        style="@style/SaleTable.ListHeader.Text"
+        />
+
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/sale_title_name_price"
+        android:layout_weight="1"
+        style="@style/SaleTable.ListHeader.Text"
+        />
+
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/sale_title_name_total"
+        android:layout_weight="2"
+        style="@style/SaleTable.ListHeader.Text"
+        />
+
+
+</LinearLayout>

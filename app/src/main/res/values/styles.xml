@@ -30,4 +30,22 @@
         <item name="color">@android:color/white</item>
     </style>
 
+
+
+
+
+    <!-- 表头样式 -->
+    <style name="SaleTable"></style>
+    <style name="SaleTable.ListHeader">
+        <item name="android:padding">5dp</item>
+    </style>
+    <style name="SaleTable.ListHeader.Text" >
+        <item name="android:gravity">center</item>
+
+
+        <item name="android:textSize">14sp</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:singleLine">true</item>
+    </style>
+
 </resources>

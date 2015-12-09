@@ -19,5 +19,11 @@
     <string name="title_activity_account_sales">AccountSalesActivity</string>
     <string name="title_activity_search_product">SearchProductActivity</string>
     <string name="title_activity_custom">CustomActivity</string>
+    <string name="sale_title_name_product">商品名称</string>
+    <string name="sale_title_name_standard">规格</string>
+    <string name="sale_title_name_util">单位</string>
+    <string name="sale_title_name_number">数量</string>
+    <string name="sale_title_name_price">单价</string>
+    <string name="sale_title_name_total">金额</string>
 
 </resources>
