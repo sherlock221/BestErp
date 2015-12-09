@@ -92,11 +92,11 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" exported="" name="greendao-generator-2.0.0" level="project" />
     <orderEntry type="library" exported="" name="gson-2.2.4" level="project" />
+    <orderEntry type="library" exported="" name="butterknife-7.0.1" level="project" />
     <orderEntry type="library" exported="" name="nineoldandroids-2.4.0" level="project" />
     <orderEntry type="library" exported="" name="photoviewlibrary" level="project" />
     <orderEntry type="library" exported="" name="volley" level="project" />
     <orderEntry type="library" exported="" name="universal-image-loader-1.9.1" level="project" />
-    <orderEntry type="library" exported="" name="butterknife-5.0.0" level="project" />
     <orderEntry type="library" exported="" name="greendao-2.0.0" level="project" />
     <orderEntry type="library" exported="" name="stetho-1.2.0-fatjar" level="project" />
     <orderEntry type="library" exported="" name="freemarker-2.3.22" level="project" />

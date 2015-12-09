@@ -1,21 +1,23 @@
 package besterp.sherlock221b.com.besterp.ui.activity;
 
+import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.animation.BounceInterpolator;
-import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.DatePicker;
 
 import com.baoyz.swipemenulistview.SwipeMenu;
 import com.baoyz.swipemenulistview.SwipeMenuCreator;
 import com.baoyz.swipemenulistview.SwipeMenuItem;
 import com.baoyz.swipemenulistview.SwipeMenuListView;
 
+import java.text.ParseException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -26,24 +28,40 @@ import besterp.sherlock221b.com.besterp.db.model.SaleAccount;
 import besterp.sherlock221b.com.besterp.model.DrawerMenuModel;
 import besterp.sherlock221b.com.besterp.ui.adapter.SaleListAdapter;
 import besterp.sherlock221b.com.besterp.ui.common.BaseActivity;
+import besterp.sherlock221b.com.besterp.ui.common.BaseDatePickDialog;
 import besterp.sherlock221b.com.besterp.util.DateUtil;
 import besterp.sherlock221b.com.besterp.util.DensityUtil;
+import besterp.sherlock221b.com.besterp.util.ToastUtils;
+import butterknife.Bind;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 public class AccountSalesActivity extends BaseActivity {
 
-    private SwipeMenuListView listView;
+
+    @Bind(R.id.sale_list_view)
+    SwipeMenuListView saleListView;
+    @Bind(R.id.btn_prev_date)
+    Button btnPrevDate;
+    @Bind(R.id.btn_next_date)
+    Button btnNextDate;
+    @Bind(R.id.btn_select_date)
+    Button btnSelectDate;
+
+
     private SaleListAdapter saleListAdapter;
     private List<SaleAccount> saleDataList;
 
+    private DatePickerDialog.OnDateSetListener selectDateListener;
+    private BaseDatePickDialog selectDatePickDialog;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_account_sales);
-
-        listView = (SwipeMenuListView) findViewById(R.id.sale_list_view);
+        ButterKnife.bind(this);
 
         DrawerMenuModel dm = getMenuItem(this.getIntent());
         if (dm != null)
@@ -54,16 +72,49 @@ public class AccountSalesActivity extends BaseActivity {
         long time = currentDate.getTime();
         saleDataList = getSaleData(currentDate);
 
-        Log.d("saleDate", saleDataList.toString());
+        Log.d("saleDate", DateUtil.yyyyMMdd.format(currentDate));
 
 
-        listView.setMenuCreator(createMenuCreator());
+        saleListView.setMenuCreator(createMenuCreator());
         // Close Interpolator
-        listView.setCloseInterpolator(new BounceInterpolator());
+        saleListView.setCloseInterpolator(new BounceInterpolator());
 
         saleListAdapter = new SaleListAdapter(this, R.layout.list_sale_item, saleDataList);
-        listView.setAdapter(saleListAdapter);
+        saleListView.setAdapter(saleListAdapter);
 
+
+        final Calendar calendar = Calendar.getInstance();
+        selectDateListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+
+
+                    calendar.set(Calendar.YEAR,year);
+                    calendar.set(Calendar.MONTH,monthOfYear);
+                    calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+
+                    ToastUtils.showShort("您选择的是: " + DateUtil.yyyyMMdd.format(calendar.getTime()));
+
+                    //刷新adapter
+                    refreshSaleListView(calendar.getTime());
+
+
+
+            }
+        };
+
+        selectDatePickDialog = new BaseDatePickDialog(AccountSalesActivity.this, selectDateListener,
+                calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH),
+                calendar.get(Calendar.DAY_OF_MONTH));
+
+    }
+
+
+
+    @OnClick(R.id.btn_select_date)
+    public void showDatePickDialog(){
+        selectDatePickDialog.show();
     }
 
 
@@ -73,10 +124,26 @@ public class AccountSalesActivity extends BaseActivity {
      * @return
      */
     private List<SaleAccount> getSaleData(Date date) {
-
         return DbUtil.getSaleAccountService().queryBuilder()
                 .where(SaleAccountDao.Properties.SaleDate.eq(date))
                 .list();
+
+    }
+
+    /**
+     * 更新listview
+     * @param date
+     */
+    private void refreshSaleListView(Date date) {
+
+        //日期
+        date = DateUtil.getDateYMDByDate(date);
+
+        //更新list
+        saleDataList.clear();
+        List<SaleAccount> newList = getSaleData(date);
+        saleDataList.addAll(newList);
+        saleListAdapter.notifyDataSetChanged();
     }
 
 
@@ -149,4 +216,5 @@ public class AccountSalesActivity extends BaseActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
 }

@@ -126,6 +126,14 @@ public class DateUtil {
         return date;
     }
 
+    /**
+     * 获得ymd类型的日期
+     * @param date
+     * @re
+     */
+    public static Date getDateYMDByDate(Date date){
+        return DateUtil.getDateYMDByString(DateUtil.yyyyMMdd.format(date));
+    }
 
     /**
      * 获取今天0点开始的秒数
