@@ -25,5 +25,12 @@
     <string name="sale_title_name_number">数量</string>
     <string name="sale_title_name_price">单价</string>
     <string name="sale_title_name_total">金额</string>
+    <string name="action_edit">修改</string>
+    <string name="action_add">添加</string>
+    <string name="title_activity_add_account_sales">AddAccountSalesActivity</string>
+    <string name="hint_account_price">请输入单价</string>
+    <string name="hint_account_number">请输入数量</string>
+    <string name="hint_account_total">自动计算金额</string>
+    <string name="select_product">选择商品</string>
 
 </resources>

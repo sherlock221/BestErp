@@ -24,7 +24,7 @@ import java.util.List;
 import besterp.sherlock221b.com.besterp.R;
 import besterp.sherlock221b.com.besterp.cons.MenuActivityEnum;
 import besterp.sherlock221b.com.besterp.model.DrawerMenuModel;
-import besterp.sherlock221b.com.besterp.ui.activity.AccountSalesActivity;
+import besterp.sherlock221b.com.besterp.ui.activity.account.AccountSalesActivity;
 import besterp.sherlock221b.com.besterp.ui.activity.CustomActivity;
 import besterp.sherlock221b.com.besterp.ui.activity.ProductActivity;
 import besterp.sherlock221b.com.besterp.ui.activity.SearchProductActivity;
@@ -124,17 +124,16 @@ public class BaseActivity extends AppCompatActivity {
                 drawerMenuArrayAdapter.notifyDataSetInvalidated();
             }
         });
-
     }
 
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
-            return doubleClick.onKeyDown(keyCode, event);
-        }
-        return super.onKeyDown(keyCode, event);
-    }
+//    @Override
+//    public boolean onKeyDown(int keyCode, KeyEvent event) {
+//        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+//            return doubleClick.onKeyDown(keyCode, event);
+//        }
+//        return super.onKeyDown(keyCode, event);
+//    }
 
     private void startMenuActivity(DrawerMenuModel dm) {
 

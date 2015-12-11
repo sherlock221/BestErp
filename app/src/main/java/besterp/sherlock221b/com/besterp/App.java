@@ -5,6 +5,7 @@ import android.content.Context;
 
 import com.facebook.stetho.Stetho;
 
+import besterp.sherlock221b.com.besterp.cons.ToastMgr;
 import besterp.sherlock221b.com.besterp.db.DbCore;
 
 /**
@@ -27,6 +28,9 @@ public class App extends Application {
 
         appContext = getApplicationContext();
         DbCore.init(this);
+
+        //toast初始化
+        ToastMgr.builder.init(getApplicationContext());
     }
 
     public static Context getContext(){

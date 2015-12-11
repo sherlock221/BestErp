@@ -34,6 +34,8 @@ public class DateUtil {
     public static long DATEMM = 86400L;
 
 
+
+
     /**
      * 获得当前时间
      * 格式：2014-12-02 10:38:53
@@ -53,6 +55,7 @@ public class DateUtil {
      */
     public static String getYesterdayYYYYMMDD() {
         Date date = new Date(System.currentTimeMillis() - DATEMM * 1000L);
+
         String str = yyyyMMdd.format(date);
         try {
             date = yyyyMMddHHmmss.parse(str + " 00:00:00");
@@ -62,6 +65,65 @@ public class DateUtil {
         }
         return "";
     }
+
+    /**
+     * 指定日期前一天
+     * @param specifiedDay
+     * @return
+     */
+    public static Date getSpecifiedDayBefore(String specifiedDay){
+        Calendar c = Calendar.getInstance();
+        Date date = null;
+        try {
+            date = yyyyMMdd.parse(specifiedDay);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        c.setTime(date);
+        int day=c.get(Calendar.DATE);
+        c.set(Calendar.DATE,day-1);
+
+        return c.getTime();
+    }
+
+    public static Date getSpecifiedDayBefore(Date specifiedDate){
+        Calendar c = Calendar.getInstance();
+        c.setTime(specifiedDate);
+        int day=c.get(Calendar.DATE);
+        c.set(Calendar.DATE,day-1);
+        return c.getTime();
+    }
+
+
+    /**
+     * 指定日期后一天
+     * @param specifiedDay
+     * @return
+     */
+    public static Date getSpecifiedDayAfter(String specifiedDay){
+        Calendar c = Calendar.getInstance();
+        Date date = null;
+        try {
+            date = yyyyMMdd.parse(specifiedDay);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        c.setTime(date);
+        int day=c.get(Calendar.DATE);
+        c.set(Calendar.DATE,day+1);
+        return c.getTime();
+    }
+
+    public static Date getSpecifiedDayAfter(Date specifiedDate){
+        Calendar c = Calendar.getInstance();
+        c.setTime(specifiedDate);
+        int day=c.get(Calendar.DATE);
+        c.set(Calendar.DATE,day+1);
+        return c.getTime();
+    }
+
 
     /**
      * 可以获取后退N天的日期
