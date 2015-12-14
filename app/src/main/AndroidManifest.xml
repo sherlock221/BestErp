@@ -17,6 +17,14 @@
         <activity
             android:name=".ui.activity.ProductActivity"
             android:label="@string/title_activity_product" >
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+
         </activity>
         <activity
             android:name=".ui.activity.account.AccountSalesActivity"
@@ -35,11 +43,6 @@
             android:name=".ui.activity.account.AddAccountSalesActivity"
             android:label="@string/title_activity_add_account_sales" >
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
 
         </activity>
     </application>

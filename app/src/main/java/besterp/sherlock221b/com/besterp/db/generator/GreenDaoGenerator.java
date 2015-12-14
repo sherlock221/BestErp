@@ -2,6 +2,7 @@ package besterp.sherlock221b.com.besterp.db.generator;
 
 import de.greenrobot.daogenerator.DaoGenerator;
 import de.greenrobot.daogenerator.Entity;
+import de.greenrobot.daogenerator.Index;
 import de.greenrobot.daogenerator.Property;
 import de.greenrobot.daogenerator.Schema;
 
@@ -14,7 +15,7 @@ public class GreenDaoGenerator {
     public static void main(String[] args) throws Exception {
 
         //两个参数分别代表：数据库版本号与自动生成代码的包路径。
-        Schema schema = new Schema(8, "besterp.sherlock221b.com.besterp.db.model");
+        Schema schema = new Schema(12, "besterp.sherlock221b.com.besterp.db.model");
         schema.setDefaultJavaPackageDao("besterp.sherlock221b.com.besterp.db.dao");
 
         schema.enableKeepSectionsByDefault();
@@ -32,6 +33,9 @@ public class GreenDaoGenerator {
         product.addStringProperty("productName").notNull();
         product.addStringProperty("productDesc");
 
+        //sortKey 字段排序
+        Property sortKeyProperty = product.addStringProperty("sortKey").getProperty();
+
         //单位
         product.addStringProperty("productUnit");
 
@@ -45,6 +49,12 @@ public class GreenDaoGenerator {
         product.addBooleanProperty("isDelete").notNull();
         product.addDateProperty("crtTime").notNull();
         product.addDateProperty("updateTime").notNull();
+
+
+        //添加索引加速查询
+        Index productIndex = new Index();
+        productIndex.addProperty(sortKeyProperty);
+        product.addIndex(productIndex);
 
 
         //规格表

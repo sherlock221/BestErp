@@ -2,14 +2,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@android:color/white"
+    >
 
     <LinearLayout
         android:id="@+id/sort_key_layout"
         android:layout_width="fill_parent"
         android:layout_height="18dip"
-        android:background="#303030" >
-
+        android:background="@color/accent_material_light" >
         <TextView
             android:id="@+id/sort_key"
             android:layout_width="wrap_content"
@@ -23,25 +24,17 @@
 
     <LinearLayout
         android:id="@+id/name_layout"
-        android:layout_width="fill_parent"
-        android:layout_height="50dip" >
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="10dip"
-            android:layout_marginRight="10dip"
-            android:src="@drawable/ic_launcher"
-            />
+        android:layout_width="match_parent"
+        android:layout_height="40dip"
+        android:padding="10dp"
+        >
 
         <TextView
             android:id="@+id/name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:textColor="#ffffff"
-            android:textSize="22sp" />
+            />
     </LinearLayout>
 
 

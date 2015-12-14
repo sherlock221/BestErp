@@ -20,6 +20,7 @@ public class Product {
     /** Not-null value. */
     private String productName;
     private String productDesc;
+    private String sortKey;
     private String productUnit;
     private Integer productUseCount;
     private Integer productPurchaseUseCount;
@@ -48,10 +49,11 @@ public class Product {
         this.id = id;
     }
 
-    public Product(Long id, String productName, String productDesc, String productUnit, Integer productUseCount, Integer productPurchaseUseCount, Integer productSaleUseCount, boolean isDelete, java.util.Date crtTime, java.util.Date updateTime) {
+    public Product(Long id, String productName, String productDesc, String sortKey, String productUnit, Integer productUseCount, Integer productPurchaseUseCount, Integer productSaleUseCount, boolean isDelete, java.util.Date crtTime, java.util.Date updateTime) {
         this.id = id;
         this.productName = productName;
         this.productDesc = productDesc;
+        this.sortKey = sortKey;
         this.productUnit = productUnit;
         this.productUseCount = productUseCount;
         this.productPurchaseUseCount = productPurchaseUseCount;
@@ -91,6 +93,14 @@ public class Product {
 
     public void setProductDesc(String productDesc) {
         this.productDesc = productDesc;
+    }
+
+    public String getSortKey() {
+        return sortKey;
+    }
+
+    public void setSortKey(String sortKey) {
+        this.sortKey = sortKey;
     }
 
     public String getProductUnit() {

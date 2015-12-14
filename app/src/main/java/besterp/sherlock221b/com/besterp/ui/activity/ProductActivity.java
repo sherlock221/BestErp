@@ -23,6 +23,7 @@ import java.util.List;
 
 import besterp.sherlock221b.com.besterp.R;
 import besterp.sherlock221b.com.besterp.cons.CustomTypeEnum;
+import besterp.sherlock221b.com.besterp.db.DbCore;
 import besterp.sherlock221b.com.besterp.db.DbUtil;
 import besterp.sherlock221b.com.besterp.db.model.Product;
 import besterp.sherlock221b.com.besterp.model.DrawerMenuModel;
@@ -69,7 +70,7 @@ public class ProductActivity extends BaseActivity {
     /**
      * 存储所有手机中的联系人
      */
-    private List<ProductModel> products = new ArrayList<ProductModel>();
+    private List<Product> products = new ArrayList<>();
 
 
     /**
@@ -100,15 +101,17 @@ public class ProductActivity extends BaseActivity {
     private TextView sectionToastText;
 
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product);
 
-
         DrawerMenuModel dm = getMenuItem(this.getIntent());
         if(dm != null)
             setTitle(dm.getMenuName());
+
 
 
         adapter = new ProductListAdapter(this, R.layout.list_product_item, products);
@@ -119,55 +122,22 @@ public class ProductActivity extends BaseActivity {
         sectionToastLayout = (RelativeLayout) findViewById(R.id.section_toast_layout);
         sectionToastText = (TextView) findViewById(R.id.section_toast_text);
 
-
-        Uri uri = ContactsContract.CommonDataKinds.Phone.CONTENT_URI;
-        Cursor cursor = getContentResolver().query(uri,
-                new String[] { "display_name", "sort_key" }, null, null, "sort_key");
-
-
-
-        if (cursor.moveToFirst()) {
-            do {
-                String name = cursor.getString(0);
-                String sortKey = getSortKey(cursor.getString(1));
-                ProductModel product = new ProductModel();
-                product.setName(name);
-                product.setSortKey(sortKey);
-                products.add(product);
-            } while (cursor.moveToNext());
-        }
-
-
+        Cursor cursor = getProductsData();
         startManagingCursor(cursor);
-        indexer = new AlphabetIndexer(cursor, 1, alphabet);
+        indexer = new AlphabetIndexer(cursor,3, alphabet);
         adapter.setIndexer(indexer);
-
 
         if (products.size() > 0) {
             setupContactsListView();
             setAlpabetListener();
         }
 
-//         testSave();
     }
 
 
-
-    public void testSave(){
-
-        Product product = new Product();
-        product.setProductName("钳子");
-        product.setCrtTime(new Date());
-        product.setUpdateTime(new Date());
-        product.setIsDelete(false);
-        product.setProductDesc("hah");
-        DbUtil.getProductService().save(product);
-
-    }
 
 
     private void setAlpabetListener(){
-
 
         alphabetButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -220,7 +190,7 @@ public class ProductActivity extends BaseActivity {
 
             @Override
             public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                int section  = indexer.getSectionForPosition(firstVisibleItem);
+                int section = indexer.getSectionForPosition(firstVisibleItem);
                 int nextSecPosition = indexer.getPositionForSection(section + 1);
 
                 if (firstVisibleItem != lastFirstVisibleItem) {
@@ -253,6 +223,35 @@ public class ProductActivity extends BaseActivity {
             }
         });
 
+    }
+
+    private Cursor  getProductsData(){
+        Cursor productCursor = DbUtil.getProductService().queryProduct();
+        if (productCursor.moveToFirst()) {
+            do {
+                Product product = new Product();
+
+                product.setId(productCursor.getLong(0));
+                product.setProductName(productCursor.getString(1));
+                product.setProductDesc(productCursor.getString(2));
+                product.setProductUnit(productCursor.getString(4));
+
+                product.setProductUseCount(productCursor.getInt(5));
+                product.setProductPurchaseUseCount(productCursor.getInt(6));
+                product.setProductSaleUseCount(productCursor.getInt(7));
+                product.setIsDelete(Boolean.parseBoolean(productCursor.getString(8)));
+
+                product.setCrtTime(new Date(productCursor.getLong(9)));
+                product.setUpdateTime(new Date(productCursor.getLong(10)));
+
+                //sortkey
+                product.setSortKey(productCursor.getString(3));
+                products.add(product);
+
+            } while (productCursor.moveToNext());
+        }
+
+        return productCursor;
     }
 
 

@@ -12,12 +12,13 @@ import android.widget.TextView;
 import java.util.List;
 
 import besterp.sherlock221b.com.besterp.R;
+import besterp.sherlock221b.com.besterp.db.model.Product;
 import besterp.sherlock221b.com.besterp.model.ProductModel;
 
 /**
  * Created by sherlock on 15/12/2.
  */
-public class ProductListAdapter extends ArrayAdapter<ProductModel>  {
+public class ProductListAdapter extends ArrayAdapter<Product>  {
 
     /**
      * 需要渲染的item布局文件
@@ -30,7 +31,7 @@ public class ProductListAdapter extends ArrayAdapter<ProductModel>  {
     private SectionIndexer mIndexer;
 
 
-    public ProductListAdapter(Context context, int resource, List<ProductModel> objects) {
+    public ProductListAdapter(Context context, int resource, List<Product> objects) {
         super(context, resource, objects);
         this.resource = resource;
     }
@@ -39,7 +40,7 @@ public class ProductListAdapter extends ArrayAdapter<ProductModel>  {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        ProductModel productModel = getItem(position);
+        Product product = getItem(position);
         LinearLayout layout = null;
 
         if (convertView == null) {
@@ -47,24 +48,20 @@ public class ProductListAdapter extends ArrayAdapter<ProductModel>  {
         } else {
             layout = (LinearLayout) convertView;
         }
-
         TextView name = (TextView) layout.findViewById(R.id.name);
         LinearLayout sortKeyLayout = (LinearLayout) layout.findViewById(R.id.sort_key_layout);
         TextView sortKey = (TextView) layout.findViewById(R.id.sort_key);
 
-        name.setText(productModel.getName());
-
+        name.setText(product.getProductName());
 
         //取得当前 position对应的 section值
         int section =  mIndexer.getSectionForPosition(position);
-
         if (position == mIndexer.getPositionForSection(section)) {
-            sortKey.setText(productModel.getSortKey());
+            sortKey.setText(product.getSortKey());
             sortKeyLayout.setVisibility(View.VISIBLE);
         } else {
             sortKeyLayout.setVisibility(View.GONE);
         }
-
         return layout;
     }
 

@@ -26,13 +26,14 @@ public class ProductDao extends AbstractDao<Product, Long> {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property ProductName = new Property(1, String.class, "productName", false, "PRODUCT_NAME");
         public final static Property ProductDesc = new Property(2, String.class, "productDesc", false, "PRODUCT_DESC");
-        public final static Property ProductUnit = new Property(3, String.class, "productUnit", false, "PRODUCT_UNIT");
-        public final static Property ProductUseCount = new Property(4, Integer.class, "productUseCount", false, "PRODUCT_USE_COUNT");
-        public final static Property ProductPurchaseUseCount = new Property(5, Integer.class, "productPurchaseUseCount", false, "PRODUCT_PURCHASE_USE_COUNT");
-        public final static Property ProductSaleUseCount = new Property(6, Integer.class, "productSaleUseCount", false, "PRODUCT_SALE_USE_COUNT");
-        public final static Property IsDelete = new Property(7, boolean.class, "isDelete", false, "IS_DELETE");
-        public final static Property CrtTime = new Property(8, java.util.Date.class, "crtTime", false, "CRT_TIME");
-        public final static Property UpdateTime = new Property(9, java.util.Date.class, "updateTime", false, "UPDATE_TIME");
+        public final static Property SortKey = new Property(3, String.class, "sortKey", false, "SORT_KEY");
+        public final static Property ProductUnit = new Property(4, String.class, "productUnit", false, "PRODUCT_UNIT");
+        public final static Property ProductUseCount = new Property(5, Integer.class, "productUseCount", false, "PRODUCT_USE_COUNT");
+        public final static Property ProductPurchaseUseCount = new Property(6, Integer.class, "productPurchaseUseCount", false, "PRODUCT_PURCHASE_USE_COUNT");
+        public final static Property ProductSaleUseCount = new Property(7, Integer.class, "productSaleUseCount", false, "PRODUCT_SALE_USE_COUNT");
+        public final static Property IsDelete = new Property(8, boolean.class, "isDelete", false, "IS_DELETE");
+        public final static Property CrtTime = new Property(9, java.util.Date.class, "crtTime", false, "CRT_TIME");
+        public final static Property UpdateTime = new Property(10, java.util.Date.class, "updateTime", false, "UPDATE_TIME");
     };
 
     private DaoSession daoSession;
@@ -54,13 +55,17 @@ public class ProductDao extends AbstractDao<Product, Long> {
                 "\"_id\" INTEGER PRIMARY KEY ," + // 0: id
                 "\"PRODUCT_NAME\" TEXT NOT NULL ," + // 1: productName
                 "\"PRODUCT_DESC\" TEXT," + // 2: productDesc
-                "\"PRODUCT_UNIT\" TEXT," + // 3: productUnit
-                "\"PRODUCT_USE_COUNT\" INTEGER," + // 4: productUseCount
-                "\"PRODUCT_PURCHASE_USE_COUNT\" INTEGER," + // 5: productPurchaseUseCount
-                "\"PRODUCT_SALE_USE_COUNT\" INTEGER," + // 6: productSaleUseCount
-                "\"IS_DELETE\" INTEGER NOT NULL ," + // 7: isDelete
-                "\"CRT_TIME\" INTEGER NOT NULL ," + // 8: crtTime
-                "\"UPDATE_TIME\" INTEGER NOT NULL );"); // 9: updateTime
+                "\"SORT_KEY\" TEXT," + // 3: sortKey
+                "\"PRODUCT_UNIT\" TEXT," + // 4: productUnit
+                "\"PRODUCT_USE_COUNT\" INTEGER," + // 5: productUseCount
+                "\"PRODUCT_PURCHASE_USE_COUNT\" INTEGER," + // 6: productPurchaseUseCount
+                "\"PRODUCT_SALE_USE_COUNT\" INTEGER," + // 7: productSaleUseCount
+                "\"IS_DELETE\" INTEGER NOT NULL ," + // 8: isDelete
+                "\"CRT_TIME\" INTEGER NOT NULL ," + // 9: crtTime
+                "\"UPDATE_TIME\" INTEGER NOT NULL );"); // 10: updateTime
+        // Add Indexes
+        db.execSQL("CREATE INDEX " + constraint + "IDX_PRODUCT_SORT_KEY ON PRODUCT" +
+                " (\"SORT_KEY\");");
     }
 
     /** Drops the underlying database table. */
@@ -85,28 +90,33 @@ public class ProductDao extends AbstractDao<Product, Long> {
             stmt.bindString(3, productDesc);
         }
  
+        String sortKey = entity.getSortKey();
+        if (sortKey != null) {
+            stmt.bindString(4, sortKey);
+        }
+ 
         String productUnit = entity.getProductUnit();
         if (productUnit != null) {
-            stmt.bindString(4, productUnit);
+            stmt.bindString(5, productUnit);
         }
  
         Integer productUseCount = entity.getProductUseCount();
         if (productUseCount != null) {
-            stmt.bindLong(5, productUseCount);
+            stmt.bindLong(6, productUseCount);
         }
  
         Integer productPurchaseUseCount = entity.getProductPurchaseUseCount();
         if (productPurchaseUseCount != null) {
-            stmt.bindLong(6, productPurchaseUseCount);
+            stmt.bindLong(7, productPurchaseUseCount);
         }
  
         Integer productSaleUseCount = entity.getProductSaleUseCount();
         if (productSaleUseCount != null) {
-            stmt.bindLong(7, productSaleUseCount);
+            stmt.bindLong(8, productSaleUseCount);
         }
-        stmt.bindLong(8, entity.getIsDelete() ? 1L: 0L);
-        stmt.bindLong(9, entity.getCrtTime().getTime());
-        stmt.bindLong(10, entity.getUpdateTime().getTime());
+        stmt.bindLong(9, entity.getIsDelete() ? 1L: 0L);
+        stmt.bindLong(10, entity.getCrtTime().getTime());
+        stmt.bindLong(11, entity.getUpdateTime().getTime());
     }
 
     @Override
@@ -128,13 +138,14 @@ public class ProductDao extends AbstractDao<Product, Long> {
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.getString(offset + 1), // productName
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // productDesc
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // productUnit
-            cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4), // productUseCount
-            cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5), // productPurchaseUseCount
-            cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // productSaleUseCount
-            cursor.getShort(offset + 7) != 0, // isDelete
-            new java.util.Date(cursor.getLong(offset + 8)), // crtTime
-            new java.util.Date(cursor.getLong(offset + 9)) // updateTime
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // sortKey
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // productUnit
+            cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5), // productUseCount
+            cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // productPurchaseUseCount
+            cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7), // productSaleUseCount
+            cursor.getShort(offset + 8) != 0, // isDelete
+            new java.util.Date(cursor.getLong(offset + 9)), // crtTime
+            new java.util.Date(cursor.getLong(offset + 10)) // updateTime
         );
         return entity;
     }
@@ -145,13 +156,14 @@ public class ProductDao extends AbstractDao<Product, Long> {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setProductName(cursor.getString(offset + 1));
         entity.setProductDesc(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setProductUnit(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setProductUseCount(cursor.isNull(offset + 4) ? null : cursor.getInt(offset + 4));
-        entity.setProductPurchaseUseCount(cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5));
-        entity.setProductSaleUseCount(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
-        entity.setIsDelete(cursor.getShort(offset + 7) != 0);
-        entity.setCrtTime(new java.util.Date(cursor.getLong(offset + 8)));
-        entity.setUpdateTime(new java.util.Date(cursor.getLong(offset + 9)));
+        entity.setSortKey(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setProductUnit(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setProductUseCount(cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5));
+        entity.setProductPurchaseUseCount(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
+        entity.setProductSaleUseCount(cursor.isNull(offset + 7) ? null : cursor.getInt(offset + 7));
+        entity.setIsDelete(cursor.getShort(offset + 8) != 0);
+        entity.setCrtTime(new java.util.Date(cursor.getLong(offset + 9)));
+        entity.setUpdateTime(new java.util.Date(cursor.getLong(offset + 10)));
      }
     
     /** @inheritdoc */

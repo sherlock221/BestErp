@@ -60,30 +60,63 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         saleAccountService.deleteAll();
 
 
-        //product
-        Product product = new Product();
-        product.setProductName("钳子");
-        product.setCrtTime(new Date());
-        product.setIsDelete(false);
-        product.setUpdateTime(new Date());
-        product.setProductUnit("把");
-        product.setProductUseCount(0);
-        product.setProductPurchaseUseCount(0);
-        product.setProductSaleUseCount(0);
+        for(int i=0; i<30;i++){
 
-        productService.save(product);
-
-        //规格
-        ProductStandard standard = new ProductStandard();
-
-        standard.setIsDelete(false);
-        standard.setUpdateTime(new Date());
-        standard.setCrtTime(new Date());
-        standard.setStandardName("10寸");
-        standard.setProductId(product.getId());
+            if(i % 2 == 0){
+                //product
+                Product product = new Product();
+                product.setProductName("钳子");
+                product.setCrtTime(new Date());
+                product.setIsDelete(false);
+                product.setUpdateTime(new Date());
+                product.setProductUnit("把");
+                product.setSortKey("Q");
+                product.setProductUseCount(0);
+                product.setProductPurchaseUseCount(0);
+                product.setProductSaleUseCount(0);
+                productService.save(product);
 
 
-        productStandardService.saveOrUpdate(standard);
+                //规格
+                ProductStandard standard = new ProductStandard();
+
+                standard.setIsDelete(false);
+                standard.setUpdateTime(new Date());
+                standard.setCrtTime(new Date());
+                standard.setStandardName("10寸");
+                standard.setProductId(product.getId());
+
+                productStandardService.saveOrUpdate(standard);
+
+            }
+
+            else{
+
+                //product
+                Product product = new Product();
+                product.setProductName("手电-"+i);
+                product.setCrtTime(new Date());
+                product.setIsDelete(false);
+                product.setUpdateTime(new Date());
+                product.setProductUnit("把");
+                product.setSortKey("S");
+                product.setProductUseCount(0);
+                product.setProductPurchaseUseCount(0);
+                product.setProductSaleUseCount(0);
+                productService.save(product);
+
+                //规格
+                ProductStandard standard = new ProductStandard();
+                standard.setIsDelete(false);
+                standard.setUpdateTime(new Date());
+                standard.setCrtTime(new Date());
+                standard.setStandardName("25");
+                standard.setProductId(product.getId());
+                productStandardService.saveOrUpdate(standard);
+            }
+
+        }
+
 
 
         //客户
@@ -99,29 +132,32 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         customService.save(custom);
 
 
+
+
+
+
         //加入销售清单
-
-        for( int i =0; i<20; i++){
-
-            SaleAccount saleAccount = new SaleAccount();
-            saleAccount.setCrtTime(new Date());
-            saleAccount.setUpdateTime(new Date());
-            saleAccount.setIsDelete(false);
-
-
-            //创建时间
-            saleAccount.setSaleDate(DateUtil.getDateYMDByString("current"));
-
-            saleAccount.setCustomId(custom.getId());
-            saleAccount.setDesc("这是销售清单");
-            saleAccount.setProductId(product.getId());
-            saleAccount.setStandardId(standard.getId());
-            saleAccount.setSaleAccountNumber(1 + i);
-            saleAccount.setSaleAccountPrice(3.2);
-            saleAccount.setSaleAccountTotal(saleAccount.getSaleAccountNumber() * saleAccount.getSaleAccountPrice());
-
-            saleAccountService.save(saleAccount);
-        }
+//        for( int i =0; i<20; i++){
+//
+//            SaleAccount saleAccount = new SaleAccount();
+//            saleAccount.setCrtTime(new Date());
+//            saleAccount.setUpdateTime(new Date());
+//            saleAccount.setIsDelete(false);
+//
+//
+//            //创建时间
+//            saleAccount.setSaleDate(DateUtil.getDateYMDByString("current"));
+//
+//            saleAccount.setCustomId(custom.getId());
+//            saleAccount.setDesc("这是销售清单");
+//            saleAccount.setProductId(product.getId());
+//            saleAccount.setStandardId(standard.getId());
+//            saleAccount.setSaleAccountNumber(1 + i);
+//            saleAccount.setSaleAccountPrice(3.2);
+//            saleAccount.setSaleAccountTotal(saleAccount.getSaleAccountNumber() * saleAccount.getSaleAccountPrice());
+//
+//            saleAccountService.save(saleAccount);
+//        }
 
 
 

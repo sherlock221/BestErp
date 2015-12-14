@@ -12,7 +12,7 @@
         <!-- 状态栏 -->
         <item name="colorPrimaryDark">@color/accent_material_light</item>
         <!-- window color-->
-        <item name="android:windowBackground">@color/accent_material_light</item>
+        <item name="android:windowBackground">@android:color/white</item>
 
         <!--返回键样式-->
         <item name="drawerArrowStyle">@style/AppTheme.DrawerArrowToggle</item>
