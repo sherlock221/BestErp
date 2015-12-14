@@ -53,7 +53,6 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
     public void testSave(){
 
         //清除数据
-
         productService.deleteAll();
         productStandardService.deleteAll();
         customService.deleteAll();

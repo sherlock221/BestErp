@@ -18,4 +18,12 @@ public class ProductService extends BaseService<Product, Long> {
         String sql = "SELECT * FROM PRODUCT  ORDER BY  SORT_KEY";
         return DbCore.getDaoSession().getDatabase().rawQuery(sql,null);
     }
+
+    public Cursor queryProduct(String likeProductName) {
+        String sql = "SELECT * FROM PRODUCT AS P  WHERE P.PRODUCT_NAME like ?  ORDER BY  P.SORT_KEY";
+        return DbCore.getDaoSession().getDatabase().rawQuery(sql,new String[]{"%"+likeProductName+"%"});
+    }
+
+
+
 }

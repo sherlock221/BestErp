@@ -1,9 +1,16 @@
 package besterp.sherlock221b.com.besterp.ui.activity;
 
+import android.app.SearchManager;
+import android.app.SearchableInfo;
+import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.provider.ContactsContract;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v4.widget.SimpleCursorAdapter;
+import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
@@ -20,6 +27,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import besterp.sherlock221b.com.besterp.R;
 import besterp.sherlock221b.com.besterp.cons.CustomTypeEnum;
@@ -28,11 +36,11 @@ import besterp.sherlock221b.com.besterp.db.DbUtil;
 import besterp.sherlock221b.com.besterp.db.model.Product;
 import besterp.sherlock221b.com.besterp.model.DrawerMenuModel;
 import besterp.sherlock221b.com.besterp.model.ProductModel;
+import besterp.sherlock221b.com.besterp.task.SearchProductTask;
 import besterp.sherlock221b.com.besterp.ui.adapter.ProductListAdapter;
 import besterp.sherlock221b.com.besterp.ui.common.BaseActivity;
-
-
-
+import besterp.sherlock221b.com.besterp.util.ToastUtils;
+import besterp.sherlock221b.com.besterp.util.ValidateUtil;
 
 
 /**
@@ -68,9 +76,12 @@ public class ProductActivity extends BaseActivity {
 
 
     /**
-     * 存储所有手机中的联系人
+     * 产品列表
      */
     private List<Product> products = new ArrayList<>();
+
+
+    private List<Product> cacheProducts = new ArrayList<>();
 
 
     /**
@@ -101,7 +112,10 @@ public class ProductActivity extends BaseActivity {
     private TextView sectionToastText;
 
 
-
+    /**
+     * 查询task
+     */
+    SearchProductTask searchTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,9 +123,8 @@ public class ProductActivity extends BaseActivity {
         setContentView(R.layout.activity_product);
 
         DrawerMenuModel dm = getMenuItem(this.getIntent());
-        if(dm != null)
+        if (dm != null)
             setTitle(dm.getMenuName());
-
 
 
         adapter = new ProductListAdapter(this, R.layout.list_product_item, products);
@@ -122,9 +135,9 @@ public class ProductActivity extends BaseActivity {
         sectionToastLayout = (RelativeLayout) findViewById(R.id.section_toast_layout);
         sectionToastText = (TextView) findViewById(R.id.section_toast_text);
 
-        Cursor cursor = getProductsData();
+        Cursor cursor = packageProductsData(DbUtil.getProductService().queryProduct(),true);
         startManagingCursor(cursor);
-        indexer = new AlphabetIndexer(cursor,3, alphabet);
+        indexer = new AlphabetIndexer(cursor, 3, alphabet);
         adapter.setIndexer(indexer);
 
         if (products.size() > 0) {
@@ -132,12 +145,17 @@ public class ProductActivity extends BaseActivity {
             setAlpabetListener();
         }
 
+        //创建查询task
+        searchTask = new SearchProductTask();
     }
 
 
+    private void updateProductList() {
+        adapter.notifyDataSetChanged();
+    }
 
 
-    private void setAlpabetListener(){
+    private void setAlpabetListener() {
 
         alphabetButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -173,14 +191,14 @@ public class ProductActivity extends BaseActivity {
                         sectionToastLayout.setVisibility(View.GONE);
                 }
 
-                    return false;
+                return false;
             }
         });
 
 
     }
 
-    private void setupContactsListView(){
+    private void setupContactsListView() {
         productsListView.setAdapter(adapter);
         productsListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
@@ -225,12 +243,13 @@ public class ProductActivity extends BaseActivity {
 
     }
 
-    private Cursor  getProductsData(){
-        Cursor productCursor = DbUtil.getProductService().queryProduct();
+    private Cursor packageProductsData(Cursor productCursor,Boolean isFirst) {
+
+        products.clear();
+
         if (productCursor.moveToFirst()) {
             do {
                 Product product = new Product();
-
                 product.setId(productCursor.getLong(0));
                 product.setProductName(productCursor.getString(1));
                 product.setProductDesc(productCursor.getString(2));
@@ -248,6 +267,10 @@ public class ProductActivity extends BaseActivity {
                 product.setSortKey(productCursor.getString(3));
                 products.add(product);
 
+                if(isFirst){
+                    cacheProducts.add(product);
+                }
+
             } while (productCursor.moveToNext());
         }
 
@@ -258,8 +281,7 @@ public class ProductActivity extends BaseActivity {
     /**
      * 获取sort key的首个字符，如果是英文字母就直接返回，否则返回#。
      *
-     * @param sortKeyString
-     *            数据库中读取出的sort key
+     * @param sortKeyString 数据库中读取出的sort key
      * @return 英文字母或者#
      */
     private String getSortKey(String sortKeyString) {
@@ -270,10 +292,77 @@ public class ProductActivity extends BaseActivity {
         return "#";
     }
 
+
+    /**
+     * 模糊匹配商品名称
+     *
+     * @param newText
+     */
+    private void getProductByName(String newText) {
+        if (searchTask != null && searchTask.getStatus() != AsyncTask.Status.RUNNING) {
+            ToastUtils.toast("开始查询了 : " + newText);
+            searchTask = new SearchProductTask();
+            searchTask.setFinishListener(new SearchProductTask.DataFinishListener() {
+                @Override
+                public void dataFinishSuccessfully(Cursor cursor) {
+                    packageProductsData(cursor,false);
+                    updateProductList();
+                }
+            });
+            searchTask.execute(newText);
+        } else {
+            ToastUtils.toast("正在查询中 稍后: ");
+        }
+    }
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_product, menu);
+
+        MenuItem menuItem = menu.findItem(R.id.search_product);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
+
+//        Cursor cursor = DbUtil.getProductService().queryProduct();
+//        SimpleCursorAdapter  simpleCursorAdapter = new SimpleCursorAdapter(this,R.layout.search_product,cursor,new String[] { "PRODUCT_NAME" },
+//                new int[] { R.id.textview });
+//        searchView.setSuggestionsAdapter(simpleCursorAdapter);
+
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if (ValidateUtil.isEmpty(query)) return false;
+                getProductByName(query);
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+//                if(ValidateUtil.isEmpty(newText))return false;
+//                getProductByName(newText);
+                return false;
+            }
+        });
+
+
+        //设置打开关闭动作监听
+        MenuItemCompat.setOnActionExpandListener(menuItem, new MenuItemCompat.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                return true;
+            }
+
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                products.clear();
+                products.addAll(cacheProducts);
+                updateProductList();
+                return true;
+            }
+        });
+
         return true;
     }
 
@@ -290,5 +379,17 @@ public class ProductActivity extends BaseActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        //取消task
+        if (searchTask != null && searchTask.getStatus() == AsyncTask.Status.RUNNING) {
+            // 如果Task还在运行，则先取消它
+            searchTask.cancel(true);
+        }
+
     }
 }
