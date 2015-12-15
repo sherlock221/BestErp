@@ -9,7 +9,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -26,12 +25,13 @@ import besterp.sherlock221b.com.besterp.cons.MenuActivityEnum;
 import besterp.sherlock221b.com.besterp.model.DrawerMenuModel;
 import besterp.sherlock221b.com.besterp.ui.activity.account.AccountSalesActivity;
 import besterp.sherlock221b.com.besterp.ui.activity.CustomActivity;
-import besterp.sherlock221b.com.besterp.ui.activity.ProductActivity;
+import besterp.sherlock221b.com.besterp.ui.activity.product.ProductActivity;
 import besterp.sherlock221b.com.besterp.ui.activity.SearchProductActivity;
 import besterp.sherlock221b.com.besterp.ui.adapter.DrawerMenuAdapter;
 import besterp.sherlock221b.com.besterp.util.DoubleClickExitHelper;
 import besterp.sherlock221b.com.besterp.util.GsonUtil;
 import besterp.sherlock221b.com.besterp.util.net.RequestManager;
+import besterp.sherlock221b.com.besterp.view.LoadingDialog;
 import besterp.sherlock221b.com.besterp.view.ToolBarHelper;
 
 /**
@@ -46,7 +46,7 @@ public class BaseActivity extends AppCompatActivity {
     public DrawerLayout drawerLayout;
     public ActionBarDrawerToggle drawerToggle;
     private ListView drawerMenu;
-
+    protected LoadingDialog loadingDialog;
 
     DoubleClickExitHelper doubleClick = new DoubleClickExitHelper(this);
 
@@ -207,8 +207,16 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+
+        //退出activity清楚dialog
+        if(loadingDialog != null)
+            loadingDialog.dismiss();
+
+
+
         //activity销毁时候取消请求
         RequestManager.cancelAll(this);
+
     }
 
 
@@ -249,5 +257,24 @@ public class BaseActivity extends AppCompatActivity {
         RequestManager.cancelAll(this);
     }
 
+
+    //dialog
+    protected  void  showLoading(String text){
+
+        if(loadingDialog == null)
+            loadingDialog = new LoadingDialog(this);
+
+        loadingDialog.show();
+        loadingDialog.setText(text);
+    }
+    protected  void  showLoading(){
+        if(loadingDialog == null)
+            loadingDialog = new LoadingDialog(this);
+        loadingDialog.show();
+    }
+
+    protected  void  hideloading(){
+        loadingDialog.cancel();
+    }
 
 }

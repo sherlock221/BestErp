@@ -1,4 +1,4 @@
-package besterp.sherlock221b.com.besterp.ui.activity;
+package besterp.sherlock221b.com.besterp.ui.activity.product;
 
 import android.app.SearchManager;
 import android.app.SearchableInfo;
@@ -29,6 +29,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import besterp.sherlock221b.com.besterp.App;
 import besterp.sherlock221b.com.besterp.R;
 import besterp.sherlock221b.com.besterp.cons.CustomTypeEnum;
 import besterp.sherlock221b.com.besterp.db.DbCore;
@@ -41,6 +42,7 @@ import besterp.sherlock221b.com.besterp.ui.adapter.ProductListAdapter;
 import besterp.sherlock221b.com.besterp.ui.common.BaseActivity;
 import besterp.sherlock221b.com.besterp.util.ToastUtils;
 import besterp.sherlock221b.com.besterp.util.ValidateUtil;
+import besterp.sherlock221b.com.besterp.view.LoadingDialog;
 
 
 /**
@@ -117,6 +119,9 @@ public class ProductActivity extends BaseActivity {
      */
     SearchProductTask searchTask;
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,6 +130,8 @@ public class ProductActivity extends BaseActivity {
         DrawerMenuModel dm = getMenuItem(this.getIntent());
         if (dm != null)
             setTitle(dm.getMenuName());
+
+        showLoading("正在加载");
 
 
         adapter = new ProductListAdapter(this, R.layout.list_product_item, products);

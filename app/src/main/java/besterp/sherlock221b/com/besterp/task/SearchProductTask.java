@@ -40,14 +40,12 @@ public class SearchProductTask extends AsyncTask<String,Integer,Cursor> {
 
     @Override
     protected void onProgressUpdate(Integer... values) {
-
         //取消了退出
         if(isCancelled()) return;
         //这个函数在doInBackground调用publishProgress时触发，虽然调用时只有一个参数
         //但是这里取到的是一个数组,所以要用progesss[0]来取值
         ToastUtils.toast(String.valueOf(values[0]));
         super.onProgressUpdate(values);
-
     }
 
 

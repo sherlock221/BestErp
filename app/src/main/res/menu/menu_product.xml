@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="besterp.sherlock221b.com.besterp.ui.activity.ProductActivity">
+    tools:context="besterp.sherlock221b.com.besterp.ui.activity.product.ProductActivity">
 
     <item
         android:id="@+id/search_product"
@@ -14,9 +14,11 @@
         android:imeOptions="actionSearch"
         />
 
-    <item android:id="@+id/action_settings" android:title="@string/action_settings"
-        android:orderInCategory="100" app:showAsAction="never" />
-
+    <item android:id="@+id/product_add"
+          android:title="添加"
+            android:icon="@drawable/ic_add_white_24dp"
+            android:orderInCategory="100"
+        app:showAsAction="always" />
 
 
 

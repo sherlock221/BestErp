@@ -32,5 +32,7 @@
     <string name="hint_account_number">请输入数量</string>
     <string name="hint_account_total">自动计算金额</string>
     <string name="select_product">选择商品</string>
+    <string name="loading_text">正在加载...</string>
+    <string name="title_activity_add_product">AddProductActivity</string>
 
 </resources>
