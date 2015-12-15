@@ -34,5 +34,6 @@
     <string name="select_product">选择商品</string>
     <string name="loading_text">正在加载...</string>
     <string name="title_activity_add_product">AddProductActivity</string>
+    <string name="title_activity_product_detailctivity">ProductDetailctivity</string>
 
 </resources>

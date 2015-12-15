@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -43,7 +44,6 @@ public class CollapsingToolbarActivity extends AppCompatActivity {
         Log.d("ac", getClass().getSimpleName());
 
     }
-
 
 
     //创建一个根
@@ -113,6 +113,16 @@ public class CollapsingToolbarActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     protected void  setTite(String title){
         mCollapsingToolbarLayout.setTitle(title);

@@ -3,6 +3,7 @@ package besterp.sherlock221b.com.besterp.ui.activity.product;
 import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -17,6 +18,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.AlphabetIndexer;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -40,9 +42,12 @@ import besterp.sherlock221b.com.besterp.model.ProductModel;
 import besterp.sherlock221b.com.besterp.task.SearchProductTask;
 import besterp.sherlock221b.com.besterp.ui.adapter.ProductListAdapter;
 import besterp.sherlock221b.com.besterp.ui.common.BaseActivity;
+import besterp.sherlock221b.com.besterp.util.PageUtil;
 import besterp.sherlock221b.com.besterp.util.ToastUtils;
 import besterp.sherlock221b.com.besterp.util.ValidateUtil;
 import besterp.sherlock221b.com.besterp.view.LoadingDialog;
+import butterknife.ButterKnife;
+import butterknife.OnItemClick;
 
 
 /**
@@ -120,18 +125,19 @@ public class ProductActivity extends BaseActivity {
     SearchProductTask searchTask;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product);
+        ButterKnife.bind(this);
 
         DrawerMenuModel dm = getMenuItem(this.getIntent());
         if (dm != null)
             setTitle(dm.getMenuName());
 
-        showLoading("正在加载");
+        //showLoading("正在加载");
+
+
 
 
         adapter = new ProductListAdapter(this, R.layout.list_product_item, products);
@@ -154,6 +160,17 @@ public class ProductActivity extends BaseActivity {
 
         //创建查询task
         searchTask = new SearchProductTask();
+
+    }
+
+
+    /**
+     * product 点击
+     */
+    @OnItemClick(R.id.contacts_list_view)
+    public void onProductItemClick(int position){
+        Product  product = products.get(position);
+        PageUtil.forwardActivityWithParams(ProductActivity.this,ProductDetailActivity.class,"product",product);
     }
 
 
@@ -381,7 +398,9 @@ public class ProductActivity extends BaseActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.product_add) {
+            Intent intent = new Intent(ProductActivity.this,AddProductActivity.class);
+            startActivity(intent);
             return true;
         }
 

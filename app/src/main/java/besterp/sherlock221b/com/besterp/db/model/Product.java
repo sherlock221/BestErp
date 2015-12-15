@@ -1,5 +1,10 @@
 package besterp.sherlock221b.com.besterp.db.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import besterp.sherlock221b.com.besterp.db.dao.DaoSession;
 import de.greenrobot.dao.DaoException;
@@ -14,7 +19,7 @@ import besterp.sherlock221b.com.besterp.db.dao.ProductStandardDao;
 /**
  * Entity mapped to table "PRODUCT".
  */
-public class Product {
+public class Product implements Parcelable {
 
     private Long id;
     /** Not-null value. */
@@ -212,4 +217,52 @@ public class Product {
     // KEEP METHODS - put your custom methods here
     // KEEP METHODS END
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this.id);
+        dest.writeString(this.productName);
+        dest.writeString(this.productDesc);
+        dest.writeString(this.sortKey);
+        dest.writeString(this.productUnit);
+        dest.writeValue(this.productUseCount);
+        dest.writeValue(this.productPurchaseUseCount);
+        dest.writeValue(this.productSaleUseCount);
+        dest.writeByte(isDelete ? (byte) 1 : (byte) 0);
+        dest.writeLong(crtTime != null ? crtTime.getTime() : -1);
+        dest.writeLong(updateTime != null ? updateTime.getTime() : -1);
+        dest.writeList(this.standards);
+    }
+
+    protected Product(Parcel in) {
+        this.id = (Long) in.readValue(Long.class.getClassLoader());
+        this.productName = in.readString();
+        this.productDesc = in.readString();
+        this.sortKey = in.readString();
+        this.productUnit = in.readString();
+        this.productUseCount = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.productPurchaseUseCount = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.productSaleUseCount = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.isDelete = in.readByte() != 0;
+        long tmpCrtTime = in.readLong();
+        this.crtTime = tmpCrtTime == -1 ? null : new Date(tmpCrtTime);
+        long tmpUpdateTime = in.readLong();
+        this.updateTime = tmpUpdateTime == -1 ? null : new Date(tmpUpdateTime);
+        this.standards = new ArrayList<ProductStandard>();
+        in.readList(this.standards, List.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<Product> CREATOR = new Parcelable.Creator<Product>() {
+        public Product createFromParcel(Parcel source) {
+            return new Product(source);
+        }
+
+        public Product[] newArray(int size) {
+            return new Product[size];
+        }
+    };
 }

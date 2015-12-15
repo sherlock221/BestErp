@@ -58,7 +58,6 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
         customService.deleteAll();
         saleAccountService.deleteAll();
 
-
         for(int i=0; i<30;i++){
 
             if(i % 2 == 0){
