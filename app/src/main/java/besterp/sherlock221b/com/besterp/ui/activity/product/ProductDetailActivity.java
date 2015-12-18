@@ -42,7 +42,6 @@ public class ProductDetailActivity extends CollapsingToolbarActivity {
         setTite(product.getProductName());
 
 
-
         //查询数据
         productStandardList  = DbUtil.getProductStandardService().queryBuilder().where(ProductStandardDao.Properties.ProductId.eq(product.getId())).list();
         //设置布局管理器

@@ -1,28 +1,24 @@
-package besterp.sherlock221b.com.besterp.ui.activity;
+package besterp.sherlock221b.com.besterp.ui;
 
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import besterp.sherlock221b.com.besterp.R;
-import besterp.sherlock221b.com.besterp.model.DrawerMenuModel;
-import besterp.sherlock221b.com.besterp.ui.common.DrawerActivity;
 
-public class CustomActivity extends DrawerActivity {
+public class TestActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_custom);
-
-        DrawerMenuModel dm = getMenuItem(this.getIntent());
-        setTitle(dm.getMenuName());
+        setContentView(R.layout.activity_test);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_custom, menu);
+        getMenuInflater().inflate(R.menu.menu_test, menu);
         return true;
     }
 

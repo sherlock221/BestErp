@@ -75,7 +75,7 @@ public class ToolBarHelper {
     }
 
     private void initToView() {
-        View view = mInflater.inflate(R.layout.base_main, mContentView);
+        View view = mInflater.inflate(R.layout.base_drawer_main, mContentView);
         baseToolBar = (Toolbar) view.findViewById(R.id.base_toolbar);
         baseDrawerLayout = (DrawerLayout) view.findViewById(R.id.base_drawer_layout);
         baseDrawerMenu = (ListView) view.findViewById(R.id.base_drawer_menu);

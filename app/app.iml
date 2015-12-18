@@ -95,6 +95,7 @@
     <orderEntry type="library" exported="" name="greendao-generator-2.0.0" level="project" />
     <orderEntry type="library" exported="" name="gson-2.2.4" level="project" />
     <orderEntry type="library" exported="" name="butterknife-7.0.1" level="project" />
+    <orderEntry type="library" exported="" name="pinyin4j-2.5.0" level="project" />
     <orderEntry type="library" exported="" name="nineoldandroids-2.4.0" level="project" />
     <orderEntry type="library" exported="" name="photoviewlibrary" level="project" />
     <orderEntry type="library" exported="" name="volley" level="project" />

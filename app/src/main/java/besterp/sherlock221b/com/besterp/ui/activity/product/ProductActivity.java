@@ -1,16 +1,10 @@
 package besterp.sherlock221b.com.besterp.ui.activity.product;
 
-import android.app.SearchManager;
-import android.app.SearchableInfo;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.provider.ContactsContract;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -18,7 +12,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.AdapterView;
 import android.widget.AlphabetIndexer;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -29,23 +22,18 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
-import besterp.sherlock221b.com.besterp.App;
 import besterp.sherlock221b.com.besterp.R;
-import besterp.sherlock221b.com.besterp.cons.CustomTypeEnum;
-import besterp.sherlock221b.com.besterp.db.DbCore;
+import besterp.sherlock221b.com.besterp.cons.ResultCode;
 import besterp.sherlock221b.com.besterp.db.DbUtil;
 import besterp.sherlock221b.com.besterp.db.model.Product;
 import besterp.sherlock221b.com.besterp.model.DrawerMenuModel;
-import besterp.sherlock221b.com.besterp.model.ProductModel;
 import besterp.sherlock221b.com.besterp.task.SearchProductTask;
 import besterp.sherlock221b.com.besterp.ui.adapter.ProductListAdapter;
-import besterp.sherlock221b.com.besterp.ui.common.BaseActivity;
+import besterp.sherlock221b.com.besterp.ui.common.DrawerActivity;
 import besterp.sherlock221b.com.besterp.util.PageUtil;
 import besterp.sherlock221b.com.besterp.util.ToastUtils;
 import besterp.sherlock221b.com.besterp.util.ValidateUtil;
-import besterp.sherlock221b.com.besterp.view.LoadingDialog;
 import butterknife.ButterKnife;
 import butterknife.OnItemClick;
 
@@ -53,7 +41,7 @@ import butterknife.OnItemClick;
 /**
  * 商品列表
  */
-public class ProductActivity extends BaseActivity {
+public class ProductActivity extends DrawerActivity {
 
 
     /**
@@ -126,6 +114,31 @@ public class ProductActivity extends BaseActivity {
 
 
     @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+
+    /**
+     * activity 返回值
+     * @param requestCode
+     * @param resultCode
+     * @param data
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(requestCode == 1 && resultCode == ResultCode.SUCCESS)
+        {
+            boolean isRefresh = data.getBooleanExtra("isRefresh",false);
+            if(isRefresh){
+                refreshProductList();
+            }
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product);
@@ -174,9 +187,16 @@ public class ProductActivity extends BaseActivity {
     }
 
 
-    private void updateProductList() {
+    private void refreshProductList(){
+        packageProductsData(DbUtil.getProductService().queryProduct(),false);
         adapter.notifyDataSetChanged();
     }
+
+    private void refreshProductList(Cursor cursor){
+        packageProductsData(cursor,false);
+        adapter.notifyDataSetChanged();
+    }
+
 
 
     private void setAlpabetListener() {
@@ -302,19 +322,6 @@ public class ProductActivity extends BaseActivity {
     }
 
 
-    /**
-     * 获取sort key的首个字符，如果是英文字母就直接返回，否则返回#。
-     *
-     * @param sortKeyString 数据库中读取出的sort key
-     * @return 英文字母或者#
-     */
-    private String getSortKey(String sortKeyString) {
-        String key = sortKeyString.substring(0, 1).toUpperCase();
-        if (key.matches("[A-Z]")) {
-            return key;
-        }
-        return "#";
-    }
 
 
     /**
@@ -329,8 +336,7 @@ public class ProductActivity extends BaseActivity {
             searchTask.setFinishListener(new SearchProductTask.DataFinishListener() {
                 @Override
                 public void dataFinishSuccessfully(Cursor cursor) {
-                    packageProductsData(cursor,false);
-                    updateProductList();
+                    refreshProductList(cursor);
                 }
             });
             searchTask.execute(newText);
@@ -382,7 +388,7 @@ public class ProductActivity extends BaseActivity {
             public boolean onMenuItemActionCollapse(MenuItem item) {
                 products.clear();
                 products.addAll(cacheProducts);
-                updateProductList();
+                adapter.notifyDataSetChanged();
                 return true;
             }
         });
@@ -399,8 +405,7 @@ public class ProductActivity extends BaseActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.product_add) {
-            Intent intent = new Intent(ProductActivity.this,AddProductActivity.class);
-            startActivity(intent);
+            PageUtil.forwardActivityForResult(ProductActivity.this,AddProductActivity.class,1);
             return true;
         }
 

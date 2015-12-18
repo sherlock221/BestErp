@@ -24,6 +24,11 @@ public class PageUtil {
         activity.startActivity(intent);
     }
 
+    public static void forwardActivityForResult(Activity activity, Class<?> clazz,int requestCode) {
+        Intent intent = new Intent(activity, clazz);
+        activity.startActivityForResult(intent,requestCode);
+    }
+
     public static  Parcelable getParcelable(String key,Intent intent){
         Bundle bundle = intent.getExtras();
         return bundle.getParcelable(key);

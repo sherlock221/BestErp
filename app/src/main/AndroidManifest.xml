@@ -47,6 +47,10 @@
             android:name=".ui.activity.product.ProductDetailActivity"
             android:label="@string/title_activity_product_detailctivity" >
         </activity>
+        <activity
+            android:name=".ui.TestActivity"
+            android:label="@string/title_activity_test" >
+        </activity>
     </application>
 
 </manifest>

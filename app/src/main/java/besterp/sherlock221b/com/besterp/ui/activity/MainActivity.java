@@ -5,9 +5,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import besterp.sherlock221b.com.besterp.R;
-import besterp.sherlock221b.com.besterp.ui.common.BaseActivity;
+import besterp.sherlock221b.com.besterp.ui.common.DrawerActivity;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends DrawerActivity {
 
 
     @Override

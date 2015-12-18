@@ -28,7 +28,7 @@ import besterp.sherlock221b.com.besterp.db.dao.SaleAccountDao;
 import besterp.sherlock221b.com.besterp.db.model.SaleAccount;
 import besterp.sherlock221b.com.besterp.model.DrawerMenuModel;
 import besterp.sherlock221b.com.besterp.ui.adapter.SaleListAdapter;
-import besterp.sherlock221b.com.besterp.ui.common.BaseActivity;
+import besterp.sherlock221b.com.besterp.ui.common.DrawerActivity;
 import besterp.sherlock221b.com.besterp.ui.common.BaseDatePickDialog;
 import besterp.sherlock221b.com.besterp.util.DateUtil;
 import besterp.sherlock221b.com.besterp.util.DensityUtil;
@@ -38,7 +38,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-public class AccountSalesActivity extends BaseActivity {
+public class AccountSalesActivity extends DrawerActivity {
 
 
     @Bind(R.id.sale_list_view)

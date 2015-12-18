@@ -2,8 +2,6 @@ package besterp.sherlock221b.com.besterp.ui.activity.account;
 
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -13,16 +11,15 @@ import android.widget.RadioGroup;
 
 import besterp.sherlock221b.com.besterp.R;
 import besterp.sherlock221b.com.besterp.cons.AccountTypeEnum;
-import besterp.sherlock221b.com.besterp.ui.common.BaseActivity;
+import besterp.sherlock221b.com.besterp.ui.common.DrawerActivity;
 import besterp.sherlock221b.com.besterp.util.ToastUtils;
 import besterp.sherlock221b.com.besterp.util.ValidateUtil;
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
 
-public class AddAccountSalesActivity extends BaseActivity {
+public class AddAccountSalesActivity extends DrawerActivity {
 
 
     @Bind(R.id.product_price)

@@ -36,7 +36,6 @@ public class ProductStandardAdapter extends RecyclerView.Adapter<ProductStandard
     @Override
     public void onBindViewHolder(ProductStandardViewHolder holder, int position) {
             ProductStandard productStandard =  productStandardList.get(position);
-
             holder.standardText.setText(productStandard.getStandardName());
             holder.itemView.setTag(productStandard);
     }
@@ -45,7 +44,6 @@ public class ProductStandardAdapter extends RecyclerView.Adapter<ProductStandard
     public int getItemCount() {
         return productStandardList.size();
     }
-
 
     class ProductStandardViewHolder extends RecyclerView.ViewHolder {
 

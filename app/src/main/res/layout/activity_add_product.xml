@@ -5,13 +5,73 @@
     android:layout_height="match_parent"
     tools:context=".AddProductActivity">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerView"
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="none">
+        android:orientation="vertical"
+        android:padding="10dp">
 
-    </android.support.v7.widget.RecyclerView>
+        <!-- 商品，名称 -->
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/product_name_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <EditText
+                android:id="@+id/product_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_product_add_name"
+                android:inputType="text"
+                android:textSize="14sp" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <!-- 商品单位 -->
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/product_util_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <EditText
+                android:id="@+id/product_util"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_product_add_util"
+                android:inputType="text"
+                android:textSize="14sp" />
+        </android.support.design.widget.TextInputLayout>
+
+
+        <!-- 商品规格 -->
+        <android.support.design.widget.TextInputLayout
+            android:id="@+id/product_standard_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp">
+
+            <EditText
+                android:id="@+id/product_standard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/hint_product_add_standard"
+                android:inputType="text"
+                android:textSize="14sp" />
+        </android.support.design.widget.TextInputLayout>
+
+        <Button
+            android:id="@+id/product_add_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/add_product_btn" />
+
+    </LinearLayout>
+
+
 
 
 </LinearLayout>

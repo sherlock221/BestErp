@@ -6,9 +6,9 @@ import android.view.MenuItem;
 
 import besterp.sherlock221b.com.besterp.R;
 import besterp.sherlock221b.com.besterp.model.DrawerMenuModel;
-import besterp.sherlock221b.com.besterp.ui.common.BaseActivity;
+import besterp.sherlock221b.com.besterp.ui.common.DrawerActivity;
 
-public class SearchProductActivity extends BaseActivity {
+public class SearchProductActivity extends DrawerActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

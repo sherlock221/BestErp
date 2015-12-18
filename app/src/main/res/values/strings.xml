@@ -35,5 +35,10 @@
     <string name="loading_text">正在加载...</string>
     <string name="title_activity_add_product">AddProductActivity</string>
     <string name="title_activity_product_detailctivity">ProductDetailctivity</string>
+    <string name="title_activity_test">TestActivity</string>
+    <string name="hint_product_add_name">请输入商品名称</string>
+    <string name="hint_product_add_util">请输入商品单位</string>
+    <string name="add_product_btn">添加商品</string>
+    <string name="hint_product_add_standard">请输入商品规格</string>
 
 </resources>
