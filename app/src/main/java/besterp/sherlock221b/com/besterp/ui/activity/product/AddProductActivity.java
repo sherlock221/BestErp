@@ -21,6 +21,7 @@ import besterp.sherlock221b.com.besterp.cons.ResultCode;
 import besterp.sherlock221b.com.besterp.db.DbUtil;
 import besterp.sherlock221b.com.besterp.db.model.Product;
 import besterp.sherlock221b.com.besterp.db.model.ProductStandard;
+import besterp.sherlock221b.com.besterp.task.LoadingTask;
 import besterp.sherlock221b.com.besterp.task.SaveProductTask;
 import besterp.sherlock221b.com.besterp.ui.common.DrawerActivity;
 import besterp.sherlock221b.com.besterp.ui.common.ToolBarActivity;
@@ -188,9 +189,9 @@ public class AddProductActivity extends ToolBarActivity {
         product.setSortKey(createSortKey(product.getProductName()));
 
         SaveProductTask task = new SaveProductTask(this);
-        task.setFinishListener(new SaveProductTask.DataFinishListener() {
+        task.setFinishListener(new SaveProductTask.DataFinishListener<Integer>() {
             @Override
-            public void dataFinishSuccessfully(int status) {
+            public void onSuccess(Integer status) {
                 switch (status){
                     case ResultCode.SUCCESS :
                         ToastUtils.toast("添加成功!");
@@ -200,6 +201,10 @@ public class AddProductActivity extends ToolBarActivity {
                         ToastUtils.toast("异常!");
                         break;
                 }
+            }
+            @Override
+            public void onError() {
+
             }
         });
 
