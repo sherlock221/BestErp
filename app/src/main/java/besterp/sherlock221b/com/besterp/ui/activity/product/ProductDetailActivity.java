@@ -1,5 +1,7 @@
 package besterp.sherlock221b.com.besterp.ui.activity.product;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -14,10 +16,11 @@ import besterp.sherlock221b.com.besterp.db.DbUtil;
 import besterp.sherlock221b.com.besterp.db.dao.ProductStandardDao;
 import besterp.sherlock221b.com.besterp.db.model.Product;
 import besterp.sherlock221b.com.besterp.db.model.ProductStandard;
-import besterp.sherlock221b.com.besterp.ui.adapter.HomeAdapter;
 import besterp.sherlock221b.com.besterp.ui.adapter.ProductStandardAdapter;
 import besterp.sherlock221b.com.besterp.ui.common.CollapsingToolbarActivity;
+import besterp.sherlock221b.com.besterp.util.DialogUtil;
 import besterp.sherlock221b.com.besterp.util.PageUtil;
+import besterp.sherlock221b.com.besterp.util.ToastUtils;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -31,6 +34,7 @@ public class ProductDetailActivity extends CollapsingToolbarActivity {
 
     private List<ProductStandard> productStandardList;
 
+    private Product product;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +42,7 @@ public class ProductDetailActivity extends CollapsingToolbarActivity {
         setContentView(R.layout.activity_product_detail_activity);
         ButterKnife.bind(this);
 
-        Product product = (Product) PageUtil.getParcelable("product", getIntent());
+        product = (Product) PageUtil.getParcelable("product", getIntent());
         setTite(product.getProductName());
 
 
@@ -55,10 +59,23 @@ public class ProductDetailActivity extends CollapsingToolbarActivity {
 
     }
 
+    private void deleteProduct(){
+        if(product != null){
+            try {
+                DbUtil.getProductService().deleteProduct(product);
+                ToastUtils.showShort("删除成功");
+                finish();
+            } catch (Exception e) {
+                ToastUtils.showShort("删除失败 数据库错误!");
+            }
+
+        }
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_product_detailctivity, menu);
+        getMenuInflater().inflate(R.menu.menu_product_detail, menu);
         return true;
     }
 
@@ -70,7 +87,23 @@ public class ProductDetailActivity extends CollapsingToolbarActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.product_detail_delete) {
+            DialogUtil.simpleConfirm(this, "提示", "确定是否删除这件商品?", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    switch (which) {
+                        case Dialog.BUTTON_POSITIVE:
+                            deleteProduct();
+                            break;
+                        case Dialog.BUTTON_NEGATIVE:
+                            break;
+                        case Dialog.BUTTON_NEUTRAL:
+                            break;
+                    }
+                    //关闭dialog
+                    dialog.dismiss();
+                }
+            });
             return true;
         }
 

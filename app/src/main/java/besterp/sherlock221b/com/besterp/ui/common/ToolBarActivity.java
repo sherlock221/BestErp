@@ -50,6 +50,7 @@ public class ToolBarActivity extends  BaseActivity {
 
 
     private void settingComponent (){
+
         setSupportActionBar(toolbar);
         //设置返回键可用
         getSupportActionBar().setHomeButtonEnabled(true);

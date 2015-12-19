@@ -14,10 +14,6 @@
         <!-- window color-->
         <item name="android:windowBackground">@android:color/white</item>
 
-        <!--返回键样式-->
-        <item name="drawerArrowStyle">@style/AppTheme.DrawerArrowToggle</item>
-
-
         <!--android4.4 适配状态栏-->
         <!--<item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>-->
         <!--<item name="android:windowTranslucentNavigation" tools:targetApi="kitkat">true</item>-->
@@ -25,9 +21,17 @@
 
     </style>
 
-    <!--返回键样式-->
+    <!--drawer样式-->
     <style name="AppTheme.DrawerArrowToggle" parent="Base.Widget.AppCompat.DrawerArrowToggle">
         <item name="color">@android:color/white</item>
+    </style>
+
+
+    <!-- toolbar设置 -->
+    <style name="toolbar_theme" parent="style/ThemeOverlay.AppCompat.Light">
+        <item name="colorControlNormal">@android:color/white</item>
+        <!--drawer样式-->
+        <item name="drawerArrowStyle">@style/AppTheme.DrawerArrowToggle</item>
     </style>
 
 
@@ -47,9 +51,9 @@
         <!-- 是否模糊  -->
         <item name="android:backgroundDimEnabled">false</item>
 
-
-
     </style>
+
+
 
 
 

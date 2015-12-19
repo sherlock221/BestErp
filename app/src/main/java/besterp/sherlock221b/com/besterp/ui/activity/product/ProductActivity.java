@@ -2,6 +2,8 @@ package besterp.sherlock221b.com.besterp.ui.activity.product;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
@@ -11,6 +13,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.BounceInterpolator;
 import android.widget.AbsListView;
 import android.widget.AlphabetIndexer;
 import android.widget.Button;
@@ -18,6 +21,10 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.baoyz.swipemenulistview.SwipeMenu;
+import com.baoyz.swipemenulistview.SwipeMenuCreator;
+import com.baoyz.swipemenulistview.SwipeMenuItem;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -31,6 +38,7 @@ import besterp.sherlock221b.com.besterp.model.DrawerMenuModel;
 import besterp.sherlock221b.com.besterp.task.SearchProductTask;
 import besterp.sherlock221b.com.besterp.ui.adapter.ProductListAdapter;
 import besterp.sherlock221b.com.besterp.ui.common.DrawerActivity;
+import besterp.sherlock221b.com.besterp.util.DensityUtil;
 import besterp.sherlock221b.com.besterp.util.PageUtil;
 import besterp.sherlock221b.com.besterp.util.ToastUtils;
 import besterp.sherlock221b.com.besterp.util.ValidateUtil;
@@ -148,10 +156,6 @@ public class ProductActivity extends DrawerActivity {
         if (dm != null)
             setTitle(dm.getMenuName());
 
-        //showLoading("正在加载");
-
-
-
 
         adapter = new ProductListAdapter(this, R.layout.list_product_item, products);
         titleLayout = (LinearLayout) findViewById(R.id.title_layout);
@@ -161,15 +165,7 @@ public class ProductActivity extends DrawerActivity {
         sectionToastLayout = (RelativeLayout) findViewById(R.id.section_toast_layout);
         sectionToastText = (TextView) findViewById(R.id.section_toast_text);
 
-        Cursor cursor = packageProductsData(DbUtil.getProductService().queryProduct(),true);
-        startManagingCursor(cursor);
-        indexer = new AlphabetIndexer(cursor, 3, alphabet);
-        adapter.setIndexer(indexer);
-
-        if (products.size() > 0) {
-            setupContactsListView();
-            setAlpabetListener();
-        }
+        initProductList();
 
         //创建查询task
         searchTask = new SearchProductTask();
@@ -177,21 +173,39 @@ public class ProductActivity extends DrawerActivity {
     }
 
 
+
     /**
-     * product 点击
+     * 初始化ListView
      */
-    @OnItemClick(R.id.contacts_list_view)
-    public void onProductItemClick(int position){
-        Product  product = products.get(position);
-        PageUtil.forwardActivityWithParams(ProductActivity.this,ProductDetailActivity.class,"product",product);
+    private void initProductList(){
+
+
+        Cursor cursor = packageProductsData(DbUtil.getProductService().queryProduct(),true);
+        startManagingCursor(cursor);
+        indexer = new AlphabetIndexer(cursor,3, alphabet);
+        adapter.setIndexer(indexer);
+
+        if (products.size() > 0) {
+            setupContactsListView();
+            setAlphabetListener();
+
+
+//            productsListView.setDivider(null);
+        }
     }
 
 
+    /**
+     * 刷新listview
+     */
     private void refreshProductList(){
         packageProductsData(DbUtil.getProductService().queryProduct(),false);
         adapter.notifyDataSetChanged();
     }
 
+    /**
+     * 刷新listview
+     */
     private void refreshProductList(Cursor cursor){
         packageProductsData(cursor,false);
         adapter.notifyDataSetChanged();
@@ -199,12 +213,10 @@ public class ProductActivity extends DrawerActivity {
 
 
 
-    private void setAlpabetListener() {
-
+    private void setAlphabetListener() {
         alphabetButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-
                 float alphabetHeight = alphabetButton.getHeight();
                 float y = event.getY();
 
@@ -234,7 +246,6 @@ public class ProductActivity extends DrawerActivity {
                         alphabetButton.setBackgroundResource(R.drawable.a_z);
                         sectionToastLayout.setVisibility(View.GONE);
                 }
-
                 return false;
             }
         });
@@ -242,12 +253,14 @@ public class ProductActivity extends DrawerActivity {
 
     }
 
+
+
+
     private void setupContactsListView() {
         productsListView.setAdapter(adapter);
         productsListView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-
             }
 
             @Override
@@ -270,7 +283,8 @@ public class ProductActivity extends DrawerActivity {
                         ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) titleLayout
                                 .getLayoutParams();
                         if (bottom < titleHeight) {
-                            float pushedDistance = bottom - titleHeight;
+                            //修改listdriver 1px边框 2
+                            float pushedDistance = bottom - titleHeight + 2;
                             params.topMargin = (int) pushedDistance;
                             titleLayout.setLayoutParams(params);
                         } else {
@@ -285,6 +299,55 @@ public class ProductActivity extends DrawerActivity {
             }
         });
 
+    }
+
+
+    /**
+     * 创建侧滑菜单
+     *
+     * @return
+     */
+    private SwipeMenuCreator createMenuCreator() {
+        SwipeMenuCreator creator = new SwipeMenuCreator() {
+            @Override
+            public void create(SwipeMenu menu) {
+                // create "open" item
+                SwipeMenuItem openItem = new SwipeMenuItem(
+                        getApplicationContext());
+                // set item background
+                openItem.setBackground(new ColorDrawable(Color.rgb(0xC9, 0xC9,
+                        0xCE)));
+                // set item width
+                openItem.setWidth(DensityUtil.dp2px(ProductActivity.this, 100));
+                // set item title
+                openItem.setTitle("修改");
+                // set item title fontsize
+                openItem.setTitleSize(14);
+                // set item title font color
+                openItem.setTitleColor(Color.WHITE);
+                // add to menu
+                menu.addMenuItem(openItem);
+
+                // create "delete" item
+                SwipeMenuItem deleteItem = new SwipeMenuItem(
+                        getApplicationContext());
+                // set item background
+                deleteItem.setBackground(new ColorDrawable(Color.rgb(0xF9,
+                        0x3F, 0x25)));
+                // set item width
+                deleteItem.setWidth(DensityUtil.dp2px(ProductActivity.this, 100));
+                // set item title
+                deleteItem.setTitle("删除");
+                // set item title fontsize
+                deleteItem.setTitleSize(14);
+                // set item title font color
+                deleteItem.setTitleColor(Color.WHITE);
+                // add to menu
+                menu.addMenuItem(deleteItem);
+            }
+        };
+
+        return creator;
     }
 
     private Cursor packageProductsData(Cursor productCursor,Boolean isFirst) {
@@ -317,10 +380,8 @@ public class ProductActivity extends DrawerActivity {
 
             } while (productCursor.moveToNext());
         }
-
         return productCursor;
     }
-
 
 
 
@@ -345,6 +406,16 @@ public class ProductActivity extends DrawerActivity {
         }
     }
 
+
+
+    /**
+     * 跳转商品详情
+     */
+    @OnItemClick(R.id.contacts_list_view)
+    public void onProductItemClick(int position){
+        Product  product = products.get(position);
+        PageUtil.forwardActivityWithParams(ProductActivity.this,ProductDetailActivity.class,"product",product);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

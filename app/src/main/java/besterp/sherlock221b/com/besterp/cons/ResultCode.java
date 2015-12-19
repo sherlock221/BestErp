@@ -7,5 +7,6 @@ public interface ResultCode {
 
         int SUCCESS = 1;
         int ERROR = -1;
+        int DB_ERROR = -2;
 
 }

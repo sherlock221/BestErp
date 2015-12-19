@@ -14,10 +14,6 @@ import besterp.sherlock221b.com.besterp.view.LoadingDialog;
  */
 public class BaseActivity  extends AppCompatActivity{
 
-
-    protected LoadingDialog loadingDialog;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,10 +23,6 @@ public class BaseActivity  extends AppCompatActivity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
-        //退出activity清楚dialog
-        if(loadingDialog != null)
-            loadingDialog.dismiss();
 
         //activity销毁时候取消请求
         RequestManager.cancelAll(this);
@@ -78,22 +70,5 @@ public class BaseActivity  extends AppCompatActivity{
         RequestManager.cancelAll(this);
     }
 
-    //dialog
-    protected  void  showLoading(String text){
 
-        if(loadingDialog == null)
-            loadingDialog = new LoadingDialog(this);
-
-        loadingDialog.show();
-        loadingDialog.setText(text);
-    }
-    protected  void  showLoading(){
-        if(loadingDialog == null)
-            loadingDialog = new LoadingDialog(this);
-        loadingDialog.show();
-    }
-
-    protected  void  hideloading(){
-        loadingDialog.cancel();
-    }
 }
