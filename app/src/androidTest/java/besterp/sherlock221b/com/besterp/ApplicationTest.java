@@ -63,7 +63,7 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
             if(i % 2 == 0){
                 //product
                 Product product = new Product();
-                product.setProductName("钳子");
+                product.setProductName("钳子"+i);
                 product.setCrtTime(new Date());
                 product.setIsDelete(false);
                 product.setUpdateTime(new Date());

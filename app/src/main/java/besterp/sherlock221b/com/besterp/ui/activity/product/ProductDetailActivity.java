@@ -45,9 +45,10 @@ public class ProductDetailActivity extends CollapsingToolbarActivity {
         product = (Product) PageUtil.getParcelable("product", getIntent());
         setTite(product.getProductName());
 
-
         //查询数据
-        productStandardList  = DbUtil.getProductStandardService().queryBuilder().where(ProductStandardDao.Properties.ProductId.eq(product.getId())).list();
+        productStandardList  = DbUtil.getProductStandardService().getProductStandardList(product.getId());
+
+
         //设置布局管理器
         productStandardRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         //设置adapter
@@ -104,6 +105,10 @@ public class ProductDetailActivity extends CollapsingToolbarActivity {
                     dialog.dismiss();
                 }
             });
+            return true;
+        }
+        else if(id == R.id.product_detail_editor){
+            PageUtil.forwardActivityWithParams(ProductDetailActivity.this,AddOrEditProductActivity.class,"product",product);
             return true;
         }
 

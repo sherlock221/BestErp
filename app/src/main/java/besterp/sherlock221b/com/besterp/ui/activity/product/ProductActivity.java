@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.BounceInterpolator;
 import android.widget.AbsListView;
 import android.widget.AlphabetIndexer;
 import android.widget.Button;
@@ -476,7 +475,7 @@ public class ProductActivity extends DrawerActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.product_add) {
-            PageUtil.forwardActivityForResult(ProductActivity.this,AddProductActivity.class,1);
+            PageUtil.forwardActivityForResult(ProductActivity.this,AddOrEditProductActivity.class,1);
             return true;
         }
 

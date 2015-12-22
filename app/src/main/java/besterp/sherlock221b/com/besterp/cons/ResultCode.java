@@ -9,4 +9,5 @@ public interface ResultCode {
         int ERROR = -1;
         int DB_ERROR = -2;
 
+        int IS_EXISTS = 2;
 }

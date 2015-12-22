@@ -31,6 +31,9 @@ public class PageUtil {
 
     public static  Parcelable getParcelable(String key,Intent intent){
         Bundle bundle = intent.getExtras();
+        if(bundle == null){
+            return null;
+        }
         return bundle.getParcelable(key);
     }
 }

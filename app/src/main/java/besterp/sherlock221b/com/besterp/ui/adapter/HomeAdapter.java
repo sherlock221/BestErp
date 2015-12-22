@@ -7,8 +7,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import besterp.sherlock221b.com.besterp.R;
-import besterp.sherlock221b.com.besterp.ui.activity.product.AddProductActivity;
-import besterp.sherlock221b.com.besterp.ui.activity.product.ProductActivity;
 
 /**
  * Created by sherlock on 15/12/15.

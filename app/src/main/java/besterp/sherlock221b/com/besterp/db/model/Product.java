@@ -185,6 +185,13 @@ public class Product implements Parcelable {
         return standards;
     }
 
+    public void setStandards( List<ProductStandard> standards) {
+        this.standards = standards;
+    }
+
+
+
+
     /** Resets a to-many relationship, making the next get call to query for a fresh result. */
     public synchronized void resetStandards() {
         standards = null;
@@ -235,7 +242,7 @@ public class Product implements Parcelable {
         dest.writeByte(isDelete ? (byte) 1 : (byte) 0);
         dest.writeLong(crtTime != null ? crtTime.getTime() : -1);
         dest.writeLong(updateTime != null ? updateTime.getTime() : -1);
-        dest.writeList(this.standards);
+//        dest.writeList(this.standards);
     }
 
     protected Product(Parcel in) {
@@ -252,8 +259,9 @@ public class Product implements Parcelable {
         this.crtTime = tmpCrtTime == -1 ? null : new Date(tmpCrtTime);
         long tmpUpdateTime = in.readLong();
         this.updateTime = tmpUpdateTime == -1 ? null : new Date(tmpUpdateTime);
-        this.standards = new ArrayList<ProductStandard>();
-        in.readList(this.standards, List.class.getClassLoader());
+
+//        this.standards = new ArrayList<ProductStandard>();
+//        in.readList(this.standards, List.class.getClassLoader());
     }
 
     public static final Parcelable.Creator<Product> CREATOR = new Parcelable.Creator<Product>() {

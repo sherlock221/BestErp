@@ -40,7 +40,7 @@
             android:label="@string/title_activity_add_account_sales" >
         </activity>
         <activity
-            android:name=".ui.activity.product.AddProductActivity"
+            android:name=".ui.activity.product.AddOrEditProductActivity"
             android:label="@string/title_activity_add_product" >
         </activity>
         <activity
